@@ -1,0 +1,11 @@
+add multiple cameras/maps
+	DONE change camera size
+	add multiple cameras
+		-actions/sounds/eventlisteners/everything? hardcoded to use camera location
+		-swap out for currently hovered camera
+	
+	add worlds to root
+	attach cameras to world
+	change map size
+
+investigate nodejs server

@@ -15,7 +15,7 @@ import { gMetaBuildingRegistry } from "../core/global_registries";
 import { createLogger } from "../core/logging";
 import { Rectangle } from "../core/rectangle";
 import { ORIGINAL_SPRITE_SCALE } from "../core/sprites";
-import { lerp, randomInt, round2Digits } from "../core/utils";
+import { lerp, randomChoice, randomInt, round2Digits } from "../core/utils";
 import { Vector } from "../core/vector";
 import { Savegame } from "../savegame/savegame";
 import { SavegameSerializer } from "../savegame/savegame_serializer";
@@ -38,6 +38,7 @@ import { ShapeDefinitionManager } from "./shape_definition_manager";
 import { AchievementProxy } from "./achievement_proxy";
 import { SoundProxy } from "./sound_proxy";
 import { GameTime } from "./time/game_time";
+import { Resources } from "./resources";
 
 const logger = createLogger("ingame/core");
 
@@ -121,6 +122,7 @@ export class GameCore {
         root.systemMgr = new GameSystemManager(root);
         root.shapeDefinitionMgr = new ShapeDefinitionManager(root);
         root.hubGoals = new HubGoals(root);
+        root.resources = new Resources(root);
         root.productionAnalytics = new ProductionAnalytics(root);
         root.buffers = new BufferMaintainer(root);
 
@@ -475,6 +477,7 @@ export class GameCore {
 
         // Finally, draw the hud. Nothing should come after that
         root.hud.draw(params);
+
 
         assert(context.globalAlpha === 1.0, "Global alpha not 1 on frame end before restore");
 

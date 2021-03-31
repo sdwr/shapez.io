@@ -137,6 +137,7 @@ export class MapView extends BaseMap {
      * @param {function} method
      */
     drawVisibleChunks(parameters, method) {
+        //cullRange in tiles
         const cullRange = parameters.visibleRect.allScaled(1 / globalConfig.tileSize);
         const top = cullRange.top();
         const right = cullRange.right();

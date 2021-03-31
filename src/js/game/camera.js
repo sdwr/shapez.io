@@ -76,6 +76,12 @@ export class Camera extends BasicSerializableObject {
         /** @type {Vector} */
         this.desiredCenter = null;
 
+        //Set anchor point
+        this.leftAnchor = 0;
+        this.topAnchor = 0;
+        this.rightAnchor = 0;
+        this.bottomAnchor = 0;
+
         // Set desired camera zoom
         /** @type {number} */
         this.desiredZoom = null;
@@ -277,6 +283,14 @@ export class Camera extends BasicSerializableObject {
         return this.center.y + this.getViewportHeight() / 2 + (this.currentShake.x * 10) / this.zoomLevel;
     }
 
+    getViewportCenterX() {
+        return this.center.x + (this.currentShake.x * 10) / this.zoomLevel;
+    }
+
+    getViewportCenterY() {
+        return this.center.y + (this.currentShake.x * 10) / this.zoomLevel;
+    }
+
     /**
      * Returns the visible world space rect
      * @returns {Rectangle}
@@ -284,10 +298,19 @@ export class Camera extends BasicSerializableObject {
     getVisibleRect() {
         return Rectangle.fromTRBL(
             Math.floor(this.getViewportTop()),
-            Math.ceil(this.getViewportRight()),
-            Math.ceil(this.getViewportBottom()),
+            Math.ceil(this.getViewportCenterX()),
+            Math.ceil(this.getViewportCenterY()),
             Math.floor(this.getViewportLeft())
         );
+    }
+
+    getVisibleRect2() {
+        return Rectangle.fromTRBL(
+            Math.floor(this.getViewportCenterY()),
+            Math.ceil(this.getViewportCenterX()),
+            Math.ceil(this.getViewportBottom()),
+            Math.floor(this.getViewportLeft())
+        )
     }
 
     getIsMapOverlayActive() {
@@ -805,6 +828,28 @@ export class Camera extends BasicSerializableObject {
             // Translate
             -zoom * this.getViewportLeft(),
             -zoom * this.getViewportTop()
+        );
+    }
+
+    transform2(context) {
+        if (G_IS_DEV && globalConfig.debug.testCulling) {
+            context.transform(1, 0, 0, 1, 100, 100);
+            return;
+        }
+
+        this.clampZoomLevel();
+        const zoom = this.zoomLevel;
+
+        context.transform(
+            // Scale, skew, rotate
+            zoom,
+            0,
+            0,
+            zoom,
+
+            // Translate
+            -zoom * this.getViewportLeft(),
+            -zoom * this.getViewportCenterY()
         );
     }
 

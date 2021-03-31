@@ -1,0 +1,90 @@
+initial load:
+	uses nodejs server?
+	
+	states > preload : PreloadState
+		inits a bunch of stuff
+		window wrapper
+
+game logic:
+	start game:
+		click "new game"
+		button handler
+		creates save
+		triggers state change to "InGameState"
+		
+	state change:
+		wipes all elements from dom
+		calls internalEnterCallback -> GameState.onEnter
+		
+	enter InGameState:
+		creates GameCore
+			creates camera, map, hud, sound, etc
+		
+		
+event dispatching system:
+	root.signals - dispatch, add callbacks
+	
+map/draw logic: Map -> MapChunk
+	map split into chunks, chunks into tiles
+	tile 32x32 px
+	chunk 16x16 tiles
+	redraws only dirty chunks (how is dirty flag checked?)
+	
+draw: GameCore.draw()
+	updates hud
+	sends framestarted event
+	calculates sprite zoom level
+	**gets camera rect** (imp for multiple cameras)
+		sets camera view to window size
+		camera draw based on gameHeight + cameraZoom
+		gameHeight set to window height
+		
+		
+	overlayAlpha for map overlay
+	
+	does draw outlined below
+	
+	
+got to understand camera calculations
+	camera.visibleRect in pixels (world reference  ...?)
+		because drawVisibleChunks uses visibleRect to get chunks from map
+		scales from pixels -> tiles, but doesn't translate from screen to world
+	
+	camera transform scales to zoom
+	
+	drawVisibleChunks: counts camera tiles
+		absolute reference or relative to screen?
+		must be world reference
+		
+		
+	
+
+map drawn layer by layer, chunk by chunk: MapView -> MapChunkView
+	chunks created as they become visible to camera
+	chunk contents: chunk.containedEntitiesByLayer
+	goes over contents once per layer (3n?)
+	
+	draws grid: MapResourcesSystem
+		tiles then borders (grid)
+		draws grid in MapView init as well?
+			does camera move on the canvas some how?
+		
+	draws belts: BeltSystem
+	draws items on belts
+	draws factory input/outputs (??)
+	draws miners
+	draws factories
+	draws wires, levels, storage
+	draws main hub
+	hud draw: GameHUD
+	
+
+
+update logic: each entity type has update() function
+	uses deltaTime from last update
+	update order set in GameSystemManager
+	
+save logic:
+	saveable objects extend BaseSerializableObject
+	have getSchema() function
+	
