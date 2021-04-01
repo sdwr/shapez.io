@@ -38,7 +38,6 @@ import { ShapeDefinitionManager } from "./shape_definition_manager";
 import { AchievementProxy } from "./achievement_proxy";
 import { SoundProxy } from "./sound_proxy";
 import { GameTime } from "./time/game_time";
-import { Resources } from "./resources";
 
 const logger = createLogger("ingame/core");
 
@@ -122,7 +121,6 @@ export class GameCore {
         root.systemMgr = new GameSystemManager(root);
         root.shapeDefinitionMgr = new ShapeDefinitionManager(root);
         root.hubGoals = new HubGoals(root);
-        root.resources = new Resources(root);
         root.productionAnalytics = new ProductionAnalytics(root);
         root.buffers = new BufferMaintainer(root);
 

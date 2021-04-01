@@ -1,0 +1,55 @@
+how to change map to separate worlds:
+	current map layout:
+		
+		BaseMap obj is serializable, has Map<> of chunks
+			get chunk
+			create chunk - looks like it creates if the chunks "should" already exist (placing obj)
+						 - how are chunks created on first load?
+			get tile contents
+			set tile contents
+			place obj
+		
+		mapView extends map, has cached canvas for background draw 
+		(looks like map bg tile)
+			draw functions call MapChunkView
+			drawVisibleChunks
+				gets chunks from root.map (hardcoded)
+				
+		MapChunk has x,y coords (chunk#) and tile# at start of chunk
+		has 2d arrays of objects and 1d array of contained entities
+			worldSpaceRectangle? entire map size calculated?
+			generates patches of resources
+			maps worldCoords to local tile 
+			
+		MapChunkView has dirty flag
+			draw functions call GameSystems
+			
+			
+draw flow:
+	game > GameCore > draw()
+		creates camera params
+		BaseMap > drawBackground(params)
+			drawVisibleChunks culls chunks
+			MapChunkView > drawBackgroundLayer(params)
+				MinerSystem > drawChunk(params, chunk)
+					context.fillRect()
+				BeltSystem > drawChunk(params, chunk)
+					StaticMapEntityComponent > drawSpriteOnBoundsClipped(params, sprite)
+		BeltSystem > drawBeltItems(params)
+				
+
+option 1:
+	keep world as is, make chunks the movable pieces
+	only load chunks when spawned
+	moving chunks changes coords - move or swap
+		all obj have relative coords to chunk, so perfect
+		will need to recalculate all movement after swap
+		
+	remove zoom, pan
+	problems:
+		items stored anywhere between frames? if pos changes will need to reload
+			entityManager
+			staticMapEntityComponent.origin
+			
+									
+		

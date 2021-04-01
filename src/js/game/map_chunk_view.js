@@ -42,6 +42,9 @@ export class MapChunkView extends MapChunk {
     drawBackgroundLayer(parameters) {
         const systems = this.root.systemMgr.systems;
         systems.mapResources.drawChunk(parameters, this);
+        //draw chunk boundaries
+        this.drawChunkBoundaries(parameters);
+
         systems.beltUnderlays.drawChunk(parameters, this);
         systems.belt.drawChunk(parameters, this);
     }
@@ -70,6 +73,20 @@ export class MapChunkView extends MapChunk {
         systems.display.drawChunk(parameters, this);
         systems.storage.drawChunk(parameters, this);
         systems.itemProcessorOverlays.drawChunk(parameters, this);
+    }
+
+    drawChunkBoundaries(parameters) {
+        parameters.context.fillStyle = "red";
+        parameters.context.lineWidth = 2;
+        // const boundsSize = 20;
+        parameters.context.beginPath();
+        parameters.context.rect(
+            this.tileX * globalConfig.tileSize,
+            this.tileY * globalConfig.tileSize,
+            globalConfig.mapChunkWorldSize,
+            globalConfig.mapChunkWorldSize);
+        parameters.context.stroke();
+
     }
 
     /**

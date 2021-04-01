@@ -29,7 +29,6 @@ import { DynamicTickrate } from "./dynamic_tickrate";
 import { KeyActionMapper } from "./key_action_mapper";
 import { Vector } from "../core/vector";
 import { GameMode } from "./game_mode";
-import { Resources } from "./resources";
 /* typehints:end */
 
 const logger = createLogger("game/root");
@@ -84,9 +83,6 @@ export class GameRoot {
 
         /** @type {Camera} */
         this.camera = null;
-
-        /** @type {Camera} */
-        this.camera2 = null
 
         /** @type {HTMLCanvasElement} */
         this.canvas = null;

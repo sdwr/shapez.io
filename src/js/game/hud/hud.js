@@ -49,9 +49,6 @@ import { HUDStandaloneAdvantages } from "./parts/standalone_advantages";
 import { HUDCatMemes } from "./parts/cat_memes";
 import { HUDTutorialVideoOffer } from "./parts/tutorial_video_offer";
 import { HUDConstantSignalEdit } from "./parts/constant_signal_edit";
-import { HUDResourceMenu } from "./parts/resource_menu";
-import { HUDWorldMenu } from "./parts/world_menu";
-
 export class GameHUD {
     /**
      * @param {GameRoot} root
@@ -84,8 +81,6 @@ export class GameHUD {
             unlockNotification: new HUDUnlockNotification(this.root),
             gameMenu: new HUDGameMenu(this.root),
             massSelector: new HUDMassSelector(this.root),
-            resourceMenu: new HUDResourceMenu(this.root),
-            worldMenu: new HUDWorldMenu(this.root),
             shop: new HUDShop(this.root),
             statistics: new HUDStatistics(this.root),
             waypoints: new HUDWaypoints(this.root),
