@@ -19,6 +19,7 @@ import { SoundProxy } from "./sound_proxy";
 import { Savegame } from "../savegame/savegame";
 import { GameLogic } from "./logic";
 import { ShapeDefinitionManager } from "./shape_definition_manager";
+import { Resources } from "./resources";
 import { HubGoals } from "./hub_goals";
 import { BufferMaintainer } from "../core/buffer_maintainer";
 import { ProductionAnalytics } from "./production_analytics";
@@ -107,6 +108,9 @@ export class GameRoot {
 
         /** @type {GameTime} */
         this.time = null;
+
+        /** @type {Resources} */
+        this.resources = null;
 
         /** @type {HubGoals} */
         this.hubGoals = null;

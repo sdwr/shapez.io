@@ -37,6 +37,7 @@
 @import "ingame_hud/unlock_notification";
 @import "ingame_hud/shop";
 @import "ingame_hud/game_menu";
+@import "ingame_hud/resource_menu";
 @import "ingame_hud/dialogs";
 @import "ingame_hud/vignette_overlay";
 @import "ingame_hud/statistics";
@@ -69,6 +70,7 @@ ingame_HUD_PlacerVariants,
 
 // Regular hud
 ingame_HUD_PinnedShapes,
+ingame_HUD_ResourceMenu,
 ingame_HUD_GameMenu,
 ingame_HUD_KeybindingOverlay,
 ingame_HUD_Notifications,

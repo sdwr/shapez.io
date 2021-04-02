@@ -38,6 +38,7 @@ import { ShapeDefinitionManager } from "./shape_definition_manager";
 import { AchievementProxy } from "./achievement_proxy";
 import { SoundProxy } from "./sound_proxy";
 import { GameTime } from "./time/game_time";
+import { Resources } from "./resources";
 
 const logger = createLogger("ingame/core");
 
@@ -110,6 +111,7 @@ export class GameCore {
         root.camera = new Camera(root);
         root.map = new MapView(root);
         root.logic = new GameLogic(root);
+        root.resources = new Resources(root);
         root.hud = new GameHUD(root);
         root.time = new GameTime(root);
         root.achievementProxy = new AchievementProxy(root);
@@ -475,7 +477,6 @@ export class GameCore {
 
         // Finally, draw the hud. Nothing should come after that
         root.hud.draw(params);
-
 
         assert(context.globalAlpha === 1.0, "Global alpha not 1 on frame end before restore");
 
