@@ -1,4 +1,4 @@
-how to change map to separate worlds:
+map + draw
 	current map layout:
 		
 		BaseMap obj is serializable, has Map<> of chunks
@@ -50,6 +50,11 @@ option 1:
 		items stored anywhere between frames? if pos changes will need to reload
 			entityManager
 			staticMapEntityComponent.origin
+		when will move happen? must be between any game logic updates
 			
+	advantages:
+		camera will work the same
+		can treat map as undivided whole
+		
 									
 		

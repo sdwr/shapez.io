@@ -111,9 +111,6 @@ export class GameRoot {
         /** @type {HubGoals} */
         this.hubGoals = null;
 
-        /** @type {Resources} */
-        this.resources = null;
-
         /** @type {BufferMaintainer} */
         this.buffers = null;
 

@@ -1,11 +1,146 @@
-add multiple cameras/maps
-	DONE change camera size
-	add multiple cameras
-		-actions/sounds/eventlisteners/everything? hardcoded to use camera location
-		-swap out for currently hovered camera
-	
-	add worlds to root
-	attach cameras to world
-	change map size
+what kind of game?
+strategy/idle/puzzle
 
-investigate nodejs server
+want resource constraints
+hands off strategy? 
+	uncontrollable units
+	build tech, place auras
+	workers cost food (= energy/electricity)
+	
+
+map moves instead of player
+tiles can be bought/replaced
+	adds random/puzzle mechanics
+	adds resource sink (reroll for good tiles)
+	adds agency/puzzle feel
+	adds loss (deleting tile with buildings/upgrades)
+	
+tile ecosystem?
+	rivers/mountains run over multiple tiles
+	replacing non-source tile 
+		same result
+		or changes to other possible position (uncertainty bubble)
+	adjacent tiles affect each other
+	reroll tiles to create ideal landscape
+	
+
+
+wc3:
+game speed - workers collect resources in 5/10s
+	- constant movement means 1/2s
+
+player motivators
+	accumulate
+		collect resources
+		build base
+		grow army
+		get/level heros
+		
+	explore
+		building types
+		units
+		upgrades
+		enemy camps
+		items
+		map
+	
+	compete
+		fight opponent
+		optimize build
+		army size/hero level/base tier
+
+game loop:
+	collect resources
+	spend resources
+		building
+		unit
+		upgrade
+		expand
+		
+game view is letterbox
+top corner is resources
+bottom row is map/progress/choose unit/building/upgrade
+
+three concurrent games
+	collect/spend - top and bottom corner
+		navigate tech tree using resources
+	
+	"real" game - map and positioning
+	
+	metagame - judge army vs enemy
+	
+	
+hooks in order
+	instant:
+	can move around workers
+	workers collect money
+	
+	medium:
+	explore buildings/units
+	grow army
+	
+	game:
+	level up
+	kill enemy
+
+	meta:
+	see story
+	refine build order
+	
+---
+loop hero:
+game speed:
+	movement every second
+	fight every 5/10 seconds
+		attack every second
+		animations
+		no real input during battle
+	pick card every 30s
+	examine item every 30s
+	change item every 1/2m
+	
+player motivators
+	accumulate
+		cards
+		build level
+		level up
+		items
+		metagame resources
+	
+	explore
+		cards
+		enemies
+		bosses
+		items
+		card interactions
+		classes
+		buildings
+		conversations
+		
+	compete
+		defeat boss
+		
+game loop
+	fight enemies
+	play cards
+	pick items
+
+meta loop
+	manage base
+		build buildings
+		pick trinkets
+	unlock cards
+	unlock classes
+	create loadout
+	
+map is square(ish)
+	top side is day timer/boss timer/speed/pause
+	right side is items/inv/detail panel
+	bottom is hand of cards
+	
+	battle pops up over map
+	
+
+	
+	
+	

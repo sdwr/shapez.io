@@ -1,0 +1,48 @@
+how to add new entity/system?
+items are not entities...
+building types handled by MetaBuilding
+	sets up components
+	has addnl entity properties
+	has MetaBuildingRegistry...
+	
+
+create new MetaCreature class
+create Components for moving entities
+	Movable
+		has destination
+		speed
+		canFly
+	HP
+		max
+		current
+	Attack
+		dmg
+		range
+		atktime
+
+create WorkerSystem?
+	-request
+	-remake
+	-delete
+add worker requests to miner
+
+
+System:
+create system file, extends GameSystem or GameSystemWithFilter
+Add system to GameSystemManger
+
+Entity:
+create entity file, extends BaseSerializableObject
+Register with EntityManager on create
+
+Component - used by GameSystemWithFilter:
+register w ComponentRegistry
+add to EntityComponentStorage
+add to entity on create
+
+
+creating building:
+	MetaBuilding.createEntity()
+	GameLogic.tryPlaceBuilding()
+		BaseMap.placeStaticEntity()
+		EntityManager.registerEntity()

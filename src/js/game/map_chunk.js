@@ -101,6 +101,7 @@ export class MapChunk {
         let patchX = rng.nextIntRange(border, globalConfig.mapChunkSize - border - 1);
         let patchY = rng.nextIntRange(border, globalConfig.mapChunkSize - border - 1);
 
+
         if (overrideX !== null) {
             patchX = overrideX;
         }
@@ -112,49 +113,57 @@ export class MapChunk {
         const avgPos = new Vector(0, 0);
         let patchesDrawn = 0;
 
-        // Each patch consists of multiple circles
-        const numCircles = patchSize;
+        // // Each patch consists of multiple circles
+        // const numCircles = patchSize;
 
-        for (let i = 0; i <= numCircles; ++i) {
-            // Determine circle parameters
-            const circleRadius = Math.min(1 + i, patchSize);
-            const circleRadiusSquare = circleRadius * circleRadius;
-            const circleOffsetRadius = (numCircles - i) / 2 + 2;
+        // for (let i = 0; i <= numCircles; ++i) {
+        //     // Determine circle parameters
+        //     const circleRadius = Math.min(1 + i, patchSize);
+        //     const circleRadiusSquare = circleRadius * circleRadius;
+        //     const circleOffsetRadius = (numCircles - i) / 2 + 2;
 
-            // We draw an elipsis actually
-            const circleScaleX = rng.nextRange(0.9, 1.1);
-            const circleScaleY = rng.nextRange(0.9, 1.1);
+        //     // We draw an elipsis actually
+        //     const circleScaleX = rng.nextRange(0.9, 1.1);
+        //     const circleScaleY = rng.nextRange(0.9, 1.1);
 
-            const circleX = patchX + rng.nextIntRange(-circleOffsetRadius, circleOffsetRadius);
-            const circleY = patchY + rng.nextIntRange(-circleOffsetRadius, circleOffsetRadius);
+        //     const circleX = patchX + rng.nextIntRange(-circleOffsetRadius, circleOffsetRadius);
+        //     const circleY = patchY + rng.nextIntRange(-circleOffsetRadius, circleOffsetRadius);
 
-            for (let dx = -circleRadius * circleScaleX - 2; dx <= circleRadius * circleScaleX + 2; ++dx) {
-                for (let dy = -circleRadius * circleScaleY - 2; dy <= circleRadius * circleScaleY + 2; ++dy) {
-                    const x = Math.round(circleX + dx);
-                    const y = Math.round(circleY + dy);
-                    if (x >= 0 && x < globalConfig.mapChunkSize && y >= 0 && y <= globalConfig.mapChunkSize) {
-                        const originalDx = dx / circleScaleX;
-                        const originalDy = dy / circleScaleY;
-                        if (originalDx * originalDx + originalDy * originalDy <= circleRadiusSquare) {
-                            if (!this.lowerLayer[x][y]) {
-                                this.lowerLayer[x][y] = item;
-                                ++patchesDrawn;
-                                avgPos.x += x;
-                                avgPos.y += y;
-                            }
-                        }
-                    } else {
-                        // logger.warn("Tried to spawn resource out of chunk");
-                    }
-                }
-            }
-        }
+        //     for (let dx = -circleRadius * circleScaleX - 2; dx <= circleRadius * circleScaleX + 2; ++dx) {
+        //         for (let dy = -circleRadius * circleScaleY - 2; dy <= circleRadius * circleScaleY + 2; ++dy) {
+        //             const x = Math.round(circleX + dx);
+        //             const y = Math.round(circleY + dy);
+        //             if (x >= 0 && x < globalConfig.mapChunkSize && y >= 0 && y <= globalConfig.mapChunkSize) {
+        //                 const originalDx = dx / circleScaleX;
+        //                 const originalDy = dy / circleScaleY;
+        //                 if (originalDx * originalDx + originalDy * originalDy <= circleRadiusSquare) {
+        //                     if (!this.lowerLayer[x][y]) {
+        //                         this.lowerLayer[x][y] = item;
+        //                         ++patchesDrawn;
+        //                         avgPos.x += x;
+        //                         avgPos.y += y;
+        //                     }
+        //                 }
+        //             } else {
+        //                 // logger.warn("Tried to spawn resource out of chunk");
+        //             }
+        //         }
+        //     }
+        // }
 
-        this.patches.push({
-            pos: avgPos.divideScalar(patchesDrawn),
-            item,
-            size: patchSize,
-        });
+        // this.patches.push({
+        //     pos: avgPos.divideScalar(patchesDrawn),
+        //     item,
+        //     size: patchSize,
+        // });
+
+
+        this.lowerLayer[patchX][patchY] = item;
+        patchesDrawn++;
+        avgPos.x = patchX;
+        avgPos.y = patchY;
+
+        this.patches.push({pos: avgPos, item, size:patchesDrawn,});
     }
 
     /**

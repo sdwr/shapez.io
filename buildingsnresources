@@ -1,0 +1,58 @@
+resource patches are created when chunk is created
+
+lets say we want to make workers collect from a resource patch when a miner is placed
+
+current gameSystem update() works like this:
+	each system has array of all entities (of that type)
+	with message hooks for add/update/remove/destroy
+	update iterates over all entities of that type
+	**NOTE: miners are currently chainable, ignore for now**
+	
+entities have components, each component attaches to a system
+
+to add workers, I need to change the mining system
+add a worker system that spends food to create workers
+
+need global worker list (for worker update())
+and per miner list (for requesting new workers)
+per miner list points to global
+when worker dies, remove from miner list
+
+push vs pull
+this way the game has to check miner.workers.length every update
+more efficient would be event queue
+when worker dies, put requestWorker event on queue
+
+
+max 4 workers per node
+miner should request worker on update
+one per update, spreads workers evenly
+
+
+how are other objects created?
+item out of miner goes
+	minerSystem > itemEjectorSystem > slots
+		slots gets used a lot all over
+		looks messy
+		actual items get moved in GameSystem > Belt > update()
+
+gets updated in GameSystemManger.update()
+
+worker updates need to happen:
+	for movement
+	for path updates
+	
+	for need: new building, upgraded building, worker death
+
+worker has:
+	attached node
+	destination
+	origin
+	speed
+	carrying
+	path
+
+path needs to update when chunk on path changes
+
+
+

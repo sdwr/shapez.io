@@ -58,6 +58,8 @@ export class MinerSystem extends GameSystemWithFilter {
                 minerComp.cachedMinedItem = tileBelow;
             }
 
+            //ADDING HERE
+
             // First, try to get rid of chained items
             if (minerComp.itemChainBuffer.length > 0) {
                 if (this.tryPerformMinerEject(entity, minerComp.itemChainBuffer[0])) {
