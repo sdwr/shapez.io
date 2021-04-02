@@ -37,7 +37,7 @@ node_modules/
 .yarn-integrity
 
 # Yarn loc
-yarn.lock
+.yarn.lock
 
 # dotenv environment variables file
 .env
