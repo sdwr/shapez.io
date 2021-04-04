@@ -5,6 +5,7 @@ import { Entity } from "./entity";
 import { MapChunk } from "./map_chunk";
 import { GameRoot } from "./root";
 import { THEME } from "./theme";
+import { Loader } from "../core/loader";
 import { drawSpriteClipped } from "../core/draw_utils";
 
 export const CHUNK_OVERLAY_RES = 3;
@@ -19,20 +20,9 @@ export class MapChunkView extends MapChunk {
     constructor(root, x, y) {
         super(root, x, y);
 
-        /**
-         * Whenever something changes, we increase this number - so we know we need to redraw
-         */
-        this.renderIteration = 0;
+        this.chunkAddSprite = Loader.getSprite("sprites/blueprites/wire_tunnel.png");
 
         this.markDirty();
-    }
-
-    /**
-     * Marks this chunk as dirty, rerendering all caches
-     */
-    markDirty() {
-        ++this.renderIteration;
-        this.renderKey = this.x + "/" + this.y + "@" + this.renderIteration;
     }
 
     /**
@@ -75,6 +65,27 @@ export class MapChunkView extends MapChunk {
         systems.itemProcessorOverlays.drawChunk(parameters, this);
     }
 
+    drawChunkAddButton(parameters) {
+        //sprite blueprints > wire_tunnel
+        this.chunkAddSprite.drawCachedCentered(
+            parameters,
+            (this.tileX + globalConfig.mapChunkSize / 2) * globalConfig.tileSize,
+            (this.tileY + globalConfig.mapChunkSize / 2) * globalConfig.tileSize,
+            globalConfig.tileSize * 4
+        );
+    }
+
+    drawChunkDeleteButton(parameters) {
+        if (!this.isStart()) {
+            this.chunkAddSprite.drawCachedCentered(
+                parameters,
+                (this.tileX + globalConfig.mapChunkSize - 0.5) * globalConfig.tileSize,
+                (this.tileY + 0.5) * globalConfig.tileSize,
+                globalConfig.tileSize
+            );
+        }
+    }
+
     drawChunkBoundaries(parameters) {
         parameters.context.fillStyle = "red";
         parameters.context.lineWidth = 2;
@@ -84,9 +95,9 @@ export class MapChunkView extends MapChunk {
             this.tileX * globalConfig.tileSize,
             this.tileY * globalConfig.tileSize,
             globalConfig.mapChunkWorldSize,
-            globalConfig.mapChunkWorldSize);
+            globalConfig.mapChunkWorldSize
+        );
         parameters.context.stroke();
-
     }
 
     /**

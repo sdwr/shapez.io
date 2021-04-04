@@ -26,6 +26,12 @@ export class MapChunk {
         this.y = y;
         this.tileX = x * globalConfig.mapChunkSize;
         this.tileY = y * globalConfig.mapChunkSize;
+        this.exists = false;
+
+        /**
+         * Whenever something changes, we increase this number - so we know we need to redraw
+         */
+        this.renderIteration = 0;
 
         /**
          * Stores the contents of the lower (= map resources) layer
@@ -83,7 +89,43 @@ export class MapChunk {
          */
         this.patches = [];
 
-        this.generateLowerLayer();
+        //do this on exists instead
+        //this.generateLowerLayer();
+    }
+
+    /**
+     * Marks this chunk as dirty, rerendering all caches
+     */
+    markDirty() {
+        ++this.renderIteration;
+        this.renderKey = this.x + "/" + this.y + "@" + this.renderIteration;
+    }
+
+    toggleExists() {
+        if (this.exists) {
+            //delete all contained entities
+            this.clearChunk();
+            this.markDirty();
+            this.exists = false;
+        } else {
+            //generate patches
+            this.generateLowerLayer();
+            this.markDirty();
+            this.exists = true;
+        }
+    }
+
+    clearChunk() {
+        this.patches = [];
+        this.lowerLayer = make2DUndefinedArray(globalConfig.mapChunkSize, globalConfig.mapChunkSize);
+        for (let i = 0; i < this.containedEntities.length; i++) {
+            let entity = this.containedEntities[i];
+            this.root.logic.tryDeleteBuilding(entity);
+        }
+    }
+
+    isStart() {
+        return this.x == 0 && this.y == 0;
     }
 
     /**
@@ -100,7 +142,6 @@ export class MapChunk {
         // Find a position within the chunk which is not blocked
         let patchX = rng.nextIntRange(border, globalConfig.mapChunkSize - border - 1);
         let patchY = rng.nextIntRange(border, globalConfig.mapChunkSize - border - 1);
-
 
         if (overrideX !== null) {
             patchX = overrideX;
@@ -157,13 +198,12 @@ export class MapChunk {
         //     size: patchSize,
         // });
 
-
         this.lowerLayer[patchX][patchY] = item;
         patchesDrawn++;
         avgPos.x = patchX;
         avgPos.y = patchY;
 
-        this.patches.push({pos: avgPos, item, size:patchesDrawn,});
+        this.patches.push({ pos: avgPos, item, size: patchesDrawn });
     }
 
     /**
@@ -274,26 +314,28 @@ export class MapChunk {
      * Generates the lower layer "terrain"
      */
     generateLowerLayer() {
-        const rng = new RandomNumberGenerator(this.x + "|" + this.y + "|" + this.root.map.seed);
+        const rng = new RandomNumberGenerator(" " + performance.now() + this.root.map.seed);
 
-        if (this.generatePredefined(rng)) {
-            return;
-        }
+        // if (this.generatePredefined(rng)) {
+        //     return;
+        // }
 
         const chunkCenter = new Vector(this.x, this.y).addScalar(0.5);
         const distanceToOriginInChunks = Math.round(chunkCenter.length());
 
         // Determine how likely it is that there is a color patch
-        const colorPatchChance = 0.9 - clamp(distanceToOriginInChunks / 25, 0, 1) * 0.5;
+        //const colorPatchChance = 0.9 - clamp(distanceToOriginInChunks / 25, 0, 1) * 0.5;
+        const colorPatchChance = 0.9;
+        const shapePatchChance = 0.9;
 
-        if (rng.next() < colorPatchChance / 4) {
+        if (rng.next() < colorPatchChance) {
             const colorPatchSize = Math.max(2, Math.round(1 + clamp(distanceToOriginInChunks / 8, 0, 4)));
             this.internalGenerateColorPatch(rng, colorPatchSize, distanceToOriginInChunks);
         }
 
         // Determine how likely it is that there is a shape patch
-        const shapePatchChance = 0.9 - clamp(distanceToOriginInChunks / 25, 0, 1) * 0.5;
-        if (rng.next() < shapePatchChance / 4) {
+        //const shapePatchChance = 0.9 - clamp(distanceToOriginInChunks / 25, 0, 1) * 0.5;
+        if (rng.next() < shapePatchChance) {
             const shapePatchSize = Math.max(2, Math.round(1 + clamp(distanceToOriginInChunks / 8, 0, 4)));
             this.internalGenerateShapePatch(rng, shapePatchSize, distanceToOriginInChunks);
         }

@@ -2,8 +2,18 @@ add gathering from resource patches
 	by magic or by worker?
 
 resource map:
-	**NOTE: map not safe**
+	**NOTE: resource list hardcoded multiple places**
 	**NOTE not saving?**
+	
+chunk create/delete:
+	buttons are hardcoded
+	not saving
+		chunks need to be added as serializable objects
+		but just the flag
+		how do entities get readded to chunk after load?
+		if chunk is created on camera view
+
+collect resources from mine
 
 
 

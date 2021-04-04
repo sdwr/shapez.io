@@ -129,6 +129,8 @@ export class MapView extends BaseMap {
     drawForeground(parameters) {
         this.drawVisibleChunks(parameters, MapChunkView.prototype.drawForegroundDynamicLayer);
         this.drawVisibleChunks(parameters, MapChunkView.prototype.drawForegroundStaticLayer);
+        this.drawVisibleChunks(parameters, MapChunkView.prototype.drawChunkDeleteButton);
+        this.drawInvisibleChunks(parameters, MapChunkView.prototype.drawChunkAddButton);
     }
 
     /**
@@ -160,7 +162,40 @@ export class MapView extends BaseMap {
         for (let chunkX = chunkStartX; chunkX <= chunkEndX; ++chunkX) {
             for (let chunkY = chunkStartY; chunkY <= chunkEndY; ++chunkY) {
                 const chunk = this.root.map.getChunk(chunkX, chunkY, true);
-                method.call(chunk, parameters);
+                if (chunk && chunk.exists) {
+                    method.call(chunk, parameters);
+                }
+            }
+        }
+    }
+
+    drawInvisibleChunks(parameters, method) {
+        //cullRange in tiles
+        const cullRange = parameters.visibleRect.allScaled(1 / globalConfig.tileSize);
+        const top = cullRange.top();
+        const right = cullRange.right();
+        const bottom = cullRange.bottom();
+        const left = cullRange.left();
+
+        const border = 0;
+        const minY = top - border;
+        const maxY = bottom + border;
+        const minX = left - border;
+        const maxX = right + border;
+
+        const chunkStartX = Math.floor(minX / globalConfig.mapChunkSize);
+        const chunkStartY = Math.floor(minY / globalConfig.mapChunkSize);
+
+        const chunkEndX = Math.floor(maxX / globalConfig.mapChunkSize);
+        const chunkEndY = Math.floor(maxY / globalConfig.mapChunkSize);
+
+        // Render y from top down for proper blending
+        for (let chunkX = chunkStartX; chunkX <= chunkEndX; ++chunkX) {
+            for (let chunkY = chunkStartY; chunkY <= chunkEndY; ++chunkY) {
+                const chunk = this.root.map.getChunk(chunkX, chunkY, false);
+                if (chunk && !chunk.exists) {
+                    method.call(chunk, parameters);
+                }
             }
         }
     }

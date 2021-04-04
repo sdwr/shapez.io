@@ -234,12 +234,12 @@ export class HUDBuildingPlacer extends HUDBuildingPlacerLogic {
      * @param {DrawParameters} parameters
      */
     draw(parameters) {
-        if (this.root.camera.zoomLevel < globalConfig.mapChunkOverviewMinZoom) {
-            // Dont allow placing in overview mode
-            this.domAttach.update(false);
-            this.variantsAttach.update(false);
-            return;
-        }
+        // if (this.root.camera.zoomLevel < globalConfig.mapChunkOverviewMinZoom) {
+        //     // Dont allow placing in overview mode
+        //     this.domAttach.update(false);
+        //     this.variantsAttach.update(false);
+        //     return;
+        // }
 
         this.domAttach.update(!!this.currentMetaBuilding.get());
         this.variantsAttach.update(!!this.currentMetaBuilding.get());

@@ -170,10 +170,14 @@ export class GameCore {
         this.root.gameIsFresh = true;
         this.root.map.seed = randomInt(0, 100000);
 
+        // place starting tile
+        const homeChunk = this.root.map.getOrCreateChunkAtTile(4, 4);
+        homeChunk.toggleExists();
+
         // Place the hub
         const hub = gMetaBuildingRegistry.findByClass(MetaHubBuilding).createEntity({
             root: this.root,
-            origin: new Vector(-2, -2),
+            origin: new Vector(4, 4),
             rotation: 0,
             originalRotation: 0,
             rotationVariant: 0,

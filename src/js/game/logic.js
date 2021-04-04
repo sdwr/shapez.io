@@ -66,6 +66,11 @@ export class GameLogic {
         // Check the whole area of the building
         for (let x = rect.x; x < rect.x + rect.w; ++x) {
             for (let y = rect.y; y < rect.y + rect.h; ++y) {
+                // check if chunk tile is on exists
+                const chunk = this.root.map.getChunkAtTileOrNull(x, y);
+                if (!chunk.exists) {
+                    return false;
+                }
                 // Check if there is any direct collision
                 const otherEntity = this.root.map.getLayerContentXY(x, y, entity.layer);
                 if (otherEntity) {

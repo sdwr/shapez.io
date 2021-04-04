@@ -430,10 +430,10 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
      * @param {Vector} tile
      */
     tryPlaceCurrentBuildingAt(tile) {
-        if (this.root.camera.zoomLevel < globalConfig.mapChunkOverviewMinZoom) {
-            // Dont allow placing in overview mode
-            return;
-        }
+        // if (this.root.camera.zoomLevel < globalConfig.mapChunkOverviewMinZoom) {
+        //     // Dont allow placing in overview mode
+        //     return;
+        // }
 
         const metaBuilding = this.currentMetaBuilding.get();
         const { rotation, rotationVariant } = metaBuilding.computeOptimalDirectionAndRotationVariantAtTile({
