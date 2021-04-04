@@ -20,7 +20,8 @@ export class MapChunkView extends MapChunk {
     constructor(root, x, y) {
         super(root, x, y);
 
-        this.chunkAddSprite = Loader.getSprite("sprites/blueprites/wire_tunnel.png");
+        this.chunkAddSprite = Loader.getSprite("sprites/blueprints/wire_tunnel.png");
+        this.chunkDeleteSprite = Loader.getSprite("sprites/misc/slot_bad_arrow.png");
 
         this.markDirty();
     }
@@ -77,7 +78,7 @@ export class MapChunkView extends MapChunk {
 
     drawChunkDeleteButton(parameters) {
         if (!this.isStart()) {
-            this.chunkAddSprite.drawCachedCentered(
+            this.chunkDeleteSprite.drawCachedCentered(
                 parameters,
                 (this.tileX + globalConfig.mapChunkSize - 0.5) * globalConfig.tileSize,
                 (this.tileY + 0.5) * globalConfig.tileSize,
