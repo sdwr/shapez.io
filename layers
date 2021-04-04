@@ -1,0 +1,9 @@
+layers:
+
+Layers defined in globals.d.ts
+layer array declared in root.js
+	used in building_placer.js
+
+record declared in map_chunk.js
+arrays also declared
+

@@ -11,9 +11,29 @@ chunk create/delete:
 		chunks need to be added as serializable objects
 		but just the flag
 		how do entities get readded to chunk after load?
-			SavegameSerializer places all entities
-				creating chunk if doesn't exist
-		if chunk is created on camera view
+			serializerInternal places all entities and creates chunks
+
+resources need to be serialized
+option 1:
+	turn resources into entities
+	need to be able to place buidlings over resources?
+	would still go in lower layer
+	add code to placebuilding
+	add code to deserialize to lower layer
+	get everythign else for free
+	
+	any performance hit?
+	code that gets run per entity per frame
+	wires have their own entity layer
+	just need to turn lower layer into entity layer like wires
+	
+	still have to add other entity types after
+	
+	
+option 2:
+	make resources their own type
+	
+	
 
 collect resources from mine
 
