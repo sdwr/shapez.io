@@ -19,6 +19,7 @@ import { DisplayComponent } from "./components/display";
 import { BeltReaderComponent } from "./components/belt_reader";
 import { FilterComponent } from "./components/filter";
 import { ItemProducerComponent } from "./components/item_producer";
+import { ResourceComponent } from "./components/resource";
 /* typehints:end */
 
 /**
@@ -88,6 +89,9 @@ export class EntityComponentStorage {
 
         /** @type {ItemProducerComponent} */
         this.ItemProducer;
+
+        /** @type {ResourceComponent} */
+        this.Resource;
 
         /* typehints:end */
     }

@@ -24,6 +24,7 @@ import { ItemProcessorOverlaysSystem } from "./systems/item_processor_overlays";
 import { BeltReaderSystem } from "./systems/belt_reader";
 import { FilterSystem } from "./systems/filter";
 import { ItemProducerSystem } from "./systems/item_producer";
+import { ResourceSystem } from "./systems/resources";
 
 const logger = createLogger("game_system_manager");
 
@@ -45,6 +46,9 @@ export class GameSystemManager {
 
             /** @type {MapResourcesSystem} */
             mapResources: null,
+
+            /** @type {ResourceSystem} */
+            resources: null,
 
             /** @type {MinerSystem} */
             miner: null,
@@ -139,6 +143,8 @@ export class GameSystemManager {
         add("itemEjector", ItemEjectorSystem);
 
         add("mapResources", MapResourcesSystem);
+
+        add("resources", ResourceSystem);
 
         add("hub", HubSystem);
 

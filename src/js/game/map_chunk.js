@@ -10,6 +10,8 @@ import { COLOR_ITEM_SINGLETONS } from "./items/color_item";
 import { GameRoot } from "./root";
 import { enumSubShape } from "./shape_definition";
 import { Rectangle } from "../core/rectangle";
+import { gMetaBuildingRegistry } from "../core/global_registries";
+import { enumResourceVariants, MetaResourcesBuilding } from "./buildings/resources";
 
 const logger = createLogger("map_chunk");
 
@@ -38,6 +40,12 @@ export class MapChunk {
          *  @type {Array<Array<?BaseItem>>}
          */
         this.lowerLayer = make2DUndefinedArray(globalConfig.mapChunkSize, globalConfig.mapChunkSize);
+
+        /**
+         * Stores the contents of the resource layer
+         * @type {Array<Array<?Entity>>}
+         */
+        this.resourceContents = make2DUndefinedArray(globalConfig.mapChunkSize, globalConfig.mapChunkSize);
 
         /**
          * Stores the contents of the regular layer
@@ -81,6 +89,7 @@ export class MapChunk {
         this.containedEntitiesByLayer = {
             regular: [],
             wires: [],
+            resource: [],
         };
 
         /**
@@ -320,24 +329,50 @@ export class MapChunk {
         //     return;
         // }
 
-        const chunkCenter = new Vector(this.x, this.y).addScalar(0.5);
-        const distanceToOriginInChunks = Math.round(chunkCenter.length());
+        // const chunkCenter = new Vector(this.x, this.y).addScalar(0.5);
+        // const distanceToOriginInChunks = Math.round(chunkCenter.length());
 
-        // Determine how likely it is that there is a color patch
-        //const colorPatchChance = 0.9 - clamp(distanceToOriginInChunks / 25, 0, 1) * 0.5;
-        const colorPatchChance = 0.9;
-        const shapePatchChance = 0.9;
+        // // Determine how likely it is that there is a color patch
+        // //const colorPatchChance = 0.9 - clamp(distanceToOriginInChunks / 25, 0, 1) * 0.5;
+        // const colorPatchChance = 0.9;
+        // const shapePatchChance = 0.9;
 
-        if (rng.next() < colorPatchChance) {
-            const colorPatchSize = Math.max(2, Math.round(1 + clamp(distanceToOriginInChunks / 8, 0, 4)));
-            this.internalGenerateColorPatch(rng, colorPatchSize, distanceToOriginInChunks);
-        }
+        // if (rng.next() < colorPatchChance) {
+        //     const colorPatchSize = Math.max(2, Math.round(1 + clamp(distanceToOriginInChunks / 8, 0, 4)));
+        //     this.internalGenerateColorPatch(rng, colorPatchSize, distanceToOriginInChunks);
+        // }
 
-        // Determine how likely it is that there is a shape patch
-        //const shapePatchChance = 0.9 - clamp(distanceToOriginInChunks / 25, 0, 1) * 0.5;
-        if (rng.next() < shapePatchChance) {
-            const shapePatchSize = Math.max(2, Math.round(1 + clamp(distanceToOriginInChunks / 8, 0, 4)));
-            this.internalGenerateShapePatch(rng, shapePatchSize, distanceToOriginInChunks);
+        // // Determine how likely it is that there is a shape patch
+        // //const shapePatchChance = 0.9 - clamp(distanceToOriginInChunks / 25, 0, 1) * 0.5;
+        // if (rng.next() < shapePatchChance) {
+        //     const shapePatchSize = Math.max(2, Math.round(1 + clamp(distanceToOriginInChunks / 8, 0, 4)));
+        //     this.internalGenerateShapePatch(rng, shapePatchSize, distanceToOriginInChunks);
+        // }
+
+        const resourcePatchChance = 0.9;
+
+        if (rng.next() < resourcePatchChance) {
+            const border = 2;
+
+            // Find a position within the chunk which is not blocked
+            let patchX = rng.nextIntRange(border, globalConfig.mapChunkSize - border - 1);
+            let patchY = rng.nextIntRange(border, globalConfig.mapChunkSize - border - 1);
+
+            //make new resource at location
+            let resourceVariants = Object.keys(enumResourceVariants);
+            let variant = resourceVariants[rng.nextIntRange(0, resourceVariants.length)];
+
+            const resource = gMetaBuildingRegistry.findByClass(MetaResourcesBuilding).createEntity({
+                root: this.root,
+                origin: new Vector(patchX + this.tileX, patchY + this.tileY),
+                rotation: 0,
+                originalRotation: 0,
+                rotationVariant: 0,
+                variant: variant,
+            });
+
+            this.root.map.placeStaticEntity(resource);
+            this.root.entityMgr.registerEntity(resource);
         }
     }
 
@@ -489,8 +524,10 @@ export class MapChunk {
         let oldContents;
         if (layer === "regular") {
             oldContents = this.contents[localX][localY];
-        } else {
+        } else if (layer === "wires") {
             oldContents = this.wireContents[localX][localY];
+        } else if (layer === "resource") {
+            oldContents = this.resourceContents[localX][localY];
         }
 
         assert(contents === null || !oldContents, "Tile already used: " + tileX + " / " + tileY);
@@ -503,8 +540,10 @@ export class MapChunk {
 
         if (layer === "regular") {
             this.contents[localX][localY] = contents;
-        } else {
+        } else if (layer === "wires") {
             this.wireContents[localX][localY] = contents;
+        } else if (layer === "resource") {
+            this.resourceContents[localX][localY] = contents;
         }
 
         if (contents) {

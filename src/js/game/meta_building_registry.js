@@ -30,6 +30,7 @@ import { buildBuildingCodeCache, gBuildingVariants, registerBuildingVariant } fr
 import { enumWireVariant } from "./components/wire";
 import { KEYMAPPINGS } from "./key_action_mapper";
 import { defaultBuildingVariant } from "./meta_building";
+import { enumResourceVariants, MetaResourcesBuilding } from "./buildings/resources";
 
 const logger = createLogger("building_registry");
 
@@ -59,6 +60,13 @@ export function initMetaBuildingRegistry() {
     gMetaBuildingRegistry.register(MetaAnalyzerBuilding);
     gMetaBuildingRegistry.register(MetaComparatorBuilding);
     gMetaBuildingRegistry.register(MetaItemProducerBuilding);
+    gMetaBuildingRegistry.register(MetaResourcesBuilding);
+
+    // Resources
+    registerBuildingVariant(62, MetaResourcesBuilding, defaultBuildingVariant);
+    registerBuildingVariant(63, MetaResourcesBuilding, enumResourceVariants.wood);
+    registerBuildingVariant(64, MetaResourcesBuilding, enumResourceVariants.stone);
+    registerBuildingVariant(65, MetaResourcesBuilding, enumResourceVariants.gold);
 
     // Belt
     registerBuildingVariant(1, MetaBeltBuilding, defaultBuildingVariant, 0);

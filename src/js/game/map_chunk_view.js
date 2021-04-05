@@ -33,6 +33,7 @@ export class MapChunkView extends MapChunk {
     drawBackgroundLayer(parameters) {
         const systems = this.root.systemMgr.systems;
         systems.mapResources.drawChunk(parameters, this);
+        systems.resources.drawChunk(parameters, this);
         //draw chunk boundaries
         this.drawChunkBoundaries(parameters);
 
