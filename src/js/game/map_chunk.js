@@ -12,10 +12,22 @@ import { enumSubShape } from "./shape_definition";
 import { Rectangle } from "../core/rectangle";
 import { gMetaBuildingRegistry } from "../core/global_registries";
 import { enumResourceVariants, MetaResourcesBuilding } from "./buildings/resources";
+import { BasicSerializableObject, types } from "../savegame/serialization";
 
 const logger = createLogger("map_chunk");
 
-export class MapChunk {
+export class MapChunk extends BasicSerializableObject {
+    static getId() {
+        return "Chunk";
+    }
+    static getSchema() {
+        return {
+            tileX: types.int,
+            tileY: types.int,
+            exists: types.bool,
+        };
+    }
+
     /**
      *
      * @param {GameRoot} root
@@ -23,6 +35,7 @@ export class MapChunk {
      * @param {number} y
      */
     constructor(root, x, y) {
+        super();
         this.root = root;
         this.x = x;
         this.y = y;

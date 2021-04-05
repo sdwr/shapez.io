@@ -1,5 +1,6 @@
 /**
  * @typedef {import("../game/entity").Entity} Entity
+ * @typedef {import("../game/map_chunk").MapChunk} MapChunk
  *
  * @typedef {{
  *   failedMam: boolean,
@@ -16,6 +17,7 @@
  *   pinnedShapes: any,
  *   waypoints: any,
  *   entities: Array<Entity>,
+ *   chunks: Array<MapChunk>,
  *   beltPaths: Array<any>
  * }} SerializedGame
  *

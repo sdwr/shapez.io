@@ -3,12 +3,55 @@ import { createLogger } from "../core/logging";
 import { Vector } from "../core/vector";
 import { getBuildingDataFromCode } from "../game/building_codes";
 import { Entity } from "../game/entity";
+import { MapChunk } from "../game/map_chunk";
 import { GameRoot } from "../game/root";
 
 const logger = createLogger("serializer_internal");
 
 // Internal serializer methods
 export class SerializerInternal {
+    /**
+     * Serializes an map of map chunks
+     * @param {Map<string, MapChunk>} map
+     */
+    serializeChunkMap(map) {
+        const serialized = [];
+        const chunks = map.entries();
+        let next = chunks.next();
+        while (!next.done) {
+            let chunk = next.value[1];
+            if (chunk && chunk.exists) {
+                serialized.push(chunk.serialize());
+            }
+            next = chunks.next();
+        }
+        return serialized;
+    }
+
+    /**
+     *
+     * @param {GameRoot} root
+     * @param {Array<MapChunk>} array
+     * @returns {string|void}
+     */
+    deserializeChunkArray(root, array) {
+        for (let i = 0; i < array.length; ++i) {
+            this.deserializeChunk(root, array[i]);
+        }
+    }
+
+    /**
+     *
+     * @param {GameRoot} root
+     * @param {MapChunk} payload
+     */
+    deserializeChunk(root, payload) {
+        let chunk = root.map.getOrCreateChunkAtTile(payload.tileX, payload.tileY);
+        if (chunk && payload.exists) {
+            chunk.exists = true;
+        }
+    }
+
     /**
      * Serializes an array of entities
      * @param {Array<Entity>} array
