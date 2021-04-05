@@ -7,8 +7,6 @@ export class ResourceComponent extends Component {
     }
 
     static getSchema() {
-        return {
-            amount: types.uint,
-        };
+        return {};
     }
 }
