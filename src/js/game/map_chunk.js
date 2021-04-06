@@ -11,7 +11,7 @@ import { GameRoot } from "./root";
 import { enumSubShape } from "./shape_definition";
 import { Rectangle } from "../core/rectangle";
 import { gMetaBuildingRegistry } from "../core/global_registries";
-import { enumResourceVariants, MetaResourcesBuilding } from "./buildings/resources";
+import { enumResourceVariants, MetaResourcesBuilding } from "./buildings/meta_resources";
 import { BasicSerializableObject, types } from "../savegame/serialization";
 
 const logger = createLogger("map_chunk");

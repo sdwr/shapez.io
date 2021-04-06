@@ -1,5 +1,7 @@
-add gathering from resource patches
-	by magic or by worker?
+add translations for resources
+translation file is created in code...
+where does data come from?
+base-en.yaml
 
 resource map:
 	**NOTE: resource list hardcoded multiple places**
@@ -16,8 +18,14 @@ chunk create/delete:
 resources need to be serialized
 option 1:
 	turn resources into entities
+	resource is a type of metaBuilding
 	need to be able to place buidlings over resources?
-	would still go in lower layer
+		buildings go in regular layer
+		resources go in lower layer
+	to use sprite code etc, need to make 1 metabuilding per resource
+	use staticbuildingcomponent + add resource component to track amt
+	
+		
 	add code to placebuilding
 	add code to deserialize to lower layer
 	get everythign else for free
@@ -26,16 +34,77 @@ option 1:
 	code that gets run per entity per frame
 	wires have their own entity layer
 	just need to turn lower layer into entity layer like wires
+	add resource entity component
+	add
 	
 	still have to add other entity types after
-	
-	
-option 2:
-	make resources their own type
-	
-	
+
 
 collect resources from mine
+	add amt to resource - 98/100 etc
+	display amt? 
+		there has to be a selection pane at some point
+		lower part of the screen
+		maybe reuse the tutorial window that already exists in lower left
+	
+	make mine building
+	should eventually be one per resource type
+	so placement will have to check for proper resource
+	some way of associating building and resource type
+	can be by miner checking meta_resource id/variant
+	each variant gets its own id
+	
+add workers
+	easiest movement is straight-line moving back and forth
+	harder is pathfinding
+	
+	needs MovementComponent
+		fields: speed, destination, origin
+		triggers logic when hits destination (message sent to workersystem?)
+		how will path work???
+			ignore terrain is easy
+			dont want to recompute path all the time
+				will have to cache, recompute when chunk dirty flag hit
+				have to know what chunks are on path
+		
+	needs MovementSystem
+		updates entities per frame 
+		
+	needs WorkerSystem (GameSystemWithFilter)
+		updates destination/origin
+	
+	how to handle gathering?
+	option 1:
+		each mine has 4 worker slots
+		one per side
+		resources are gathered at speed 4 workers can get to builindg/back
+		
+		tradeoff:
+		easier logic
+		doesnt need dedicated controls
+		caps workers w/o needing total cap
+		
+	option 2:
+		assign workers to buildings
+		cap at 5/10/w/e
+		resources gathered at mine speed
+		like sc2 mineral patches, only 1 worker inside at a time
+		
+		tradeoff:
+		logic still easy
+		needs +/- control and total count
+		
+	option 3:
+		workers auto-gather
+		
+		tradeoff:
+		more complicated worker logic
+		find available work
+		more handsoff
+		
+		
+		
+		
 
 
 
