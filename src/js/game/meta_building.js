@@ -199,7 +199,7 @@ export class MetaBuilding {
      * @param {number} param0.rotationVariant Rotation variant
      * @param {string} param0.variant
      */
-    createEntity({ root, origin, rotation, originalRotation, rotationVariant, variant }) {
+    createStaticEntity({ root, origin, rotation, originalRotation, rotationVariant, variant }) {
         const entity = new Entity(root);
         entity.layer = this.getLayer();
         entity.addComponent(

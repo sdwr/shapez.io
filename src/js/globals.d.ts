@@ -192,7 +192,7 @@ declare interface TypedSignal<T extends Array<any>> {
     removeAll();
 }
 
-declare type Layer = "regular" | "wires" | "resource";
+declare type Layer = "regular" | "wires" | "resource" | "dynamic";
 declare type ItemType = "shape" | "color" | "boolean";
 
 declare module "worker-loader?inline=true&fallback=false!*" {

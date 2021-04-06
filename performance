@@ -1,0 +1,9 @@
+(incomplete) list of performance hits (opportunties!)
+	entityAdded/Changed/Removed triggered 5 times each
+		might impact performance if workers are all entities
+		probably not
+		yolo
+	
+	MapChunk loads sprites once per chunk
+	signals.prePlacementCheck trigger once per tile when hovered
+	

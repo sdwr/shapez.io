@@ -1,6 +1,7 @@
 import { globalConfig } from "../../core/config";
 import { DrawParameters } from "../../core/draw_parameters";
-import { enumDirectionToVector } from "../../core/vector";
+import { enumDirectionToVector, Vector } from "../../core/vector";
+import { STOP_PROPAGATION } from "../../core/signal";
 import { BaseItem } from "../base_item";
 import { MinerComponent } from "../components/miner";
 import { Entity } from "../entity";
@@ -12,6 +13,8 @@ export class MinerSystem extends GameSystemWithFilter {
         super(root, [MinerComponent]);
 
         this.needsRecompute = true;
+
+        this.root.signals.prePlacementCheck.add(this.prePlacementCheck, this);
 
         this.root.signals.entityAdded.add(this.onEntityChanged, this);
         this.root.signals.entityChanged.add(this.onEntityChanged, this);
@@ -27,6 +30,30 @@ export class MinerSystem extends GameSystemWithFilter {
         if (minerComp && minerComp.chainable) {
             // Miner component, need to recompute
             this.needsRecompute = true;
+        }
+    }
+
+    /**
+     * Performs pre-placement checks
+     * @param {Entity} entity
+     * @param {Vector} offset
+     */
+    prePlacementCheck(entity, offset) {
+        const minerComp = entity.components.Miner;
+        if (!minerComp) {
+            return;
+        }
+        //get location
+        let x = entity.components.StaticMapEntity.origin.x;
+        let y = entity.components.StaticMapEntity.origin.y;
+        if (offset) {
+            x += offset.x;
+            y += offset.y;
+        }
+        //check if miner is above resource
+        const resource = this.root.map.getLayerContentXY(x, y, "resource");
+        if (!resource) {
+            return STOP_PROPAGATION;
         }
     }
 

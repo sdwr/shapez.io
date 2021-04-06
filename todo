@@ -29,15 +29,6 @@ option 1:
 	add code to placebuilding
 	add code to deserialize to lower layer
 	get everythign else for free
-	
-	any performance hit?
-	code that gets run per entity per frame
-	wires have their own entity layer
-	just need to turn lower layer into entity layer like wires
-	add resource entity component
-	add
-	
-	still have to add other entity types after
 
 
 collect resources from mine
@@ -58,17 +49,35 @@ add workers
 	easiest movement is straight-line moving back and forth
 	harder is pathfinding
 	
-	needs MovementComponent
+	needs MovementComponent DynamicMapEntityComponent
 		fields: speed, destination, origin
 		triggers logic when hits destination (message sent to workersystem?)
+			
 		how will path work???
 			ignore terrain is easy
 			dont want to recompute path all the time
 				will have to cache, recompute when chunk dirty flag hit
 				have to know what chunks are on path
 		
-	needs MovementSystem
-		updates entities per frame 
+	needs MovementSystem DynamicMapEntitySystem
+		
+		add deserialize
+			make sure deserializie adds to chunk
+		add createDynamicEntity
+		add metaunit base + extensions
+		add metaunit registry
+		complete dynamicEntitySystem drawChunk() by calling metaunit base per entity
+		
+		update everywhere that uses createStaticEntity
+			entity.js clone()
+			
+			
+		how to create
+		meta_unit system like buildings?
+		need one place to add components from 
+		and load sprites/animations
+		
+		
 		
 	needs WorkerSystem (GameSystemWithFilter)
 		updates destination/origin

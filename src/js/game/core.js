@@ -175,7 +175,7 @@ export class GameCore {
         homeChunk.toggleExists();
 
         // Place the hub
-        const hub = gMetaBuildingRegistry.findByClass(MetaHubBuilding).createEntity({
+        const hub = gMetaBuildingRegistry.findByClass(MetaHubBuilding).createStaticEntity({
             root: this.root,
             origin: new Vector(4, 4),
             rotation: 0,

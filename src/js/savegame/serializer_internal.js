@@ -85,6 +85,16 @@ export class SerializerInternal {
      * @param {Entity} payload
      */
     deserializeEntity(root, payload) {
+        if (payload.components.StaticMapEntity) {
+            this.deserializeStaticEntity(root, payload);
+        } else if (payload.components.DynamicMapEntity) {
+            this.deserializeDynamicEntity(root, payload);
+        } else {
+            assert("entity has no data");
+        }
+    }
+
+    deserializeStaticEntity(root, payload) {
         const staticData = payload.components.StaticMapEntity;
         assert(staticData, "entity has no static data");
 
@@ -93,7 +103,7 @@ export class SerializerInternal {
 
         const metaBuilding = data.metaInstance;
 
-        const entity = metaBuilding.createEntity({
+        const entity = metaBuilding.createStaticEntity({
             root,
             origin: Vector.fromSerializedObject(staticData.origin),
             rotation: staticData.rotation,
@@ -108,6 +118,10 @@ export class SerializerInternal {
 
         root.entityMgr.registerEntity(entity, payload.uid);
         root.map.placeStaticEntity(entity);
+    }
+
+    deserializeDynamicEntity(root, payload) {
+        const dynamicData = payload.components.DynamicMapEntity;
     }
 
     /////// COMPONENTS ////

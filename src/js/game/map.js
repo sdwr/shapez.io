@@ -124,6 +124,7 @@ export class BaseMap extends BasicSerializableObject {
      */
     getLayerContentXY(x, y, layer) {
         const chunk = this.getChunkAtTileOrNull(x, y);
+        console.log(chunk);
         return chunk && chunk.getLayerContentFromWorldCoords(x, y, layer);
     }
 

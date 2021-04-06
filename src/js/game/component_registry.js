@@ -19,6 +19,7 @@ import { DisplayComponent } from "./components/display";
 import { BeltReaderComponent } from "./components/belt_reader";
 import { FilterComponent } from "./components/filter";
 import { ItemProducerComponent } from "./components/item_producer";
+import { DynamicMapEntityComponent } from "./components/dynamic_map_entity";
 import { ResourceComponent } from "./components/resource";
 
 export function initComponentRegistry() {
@@ -43,6 +44,7 @@ export function initComponentRegistry() {
     gComponentRegistry.register(FilterComponent);
     gComponentRegistry.register(ItemProducerComponent);
     gComponentRegistry.register(ResourceComponent);
+    gComponentRegistry.register(DynamicMapEntityComponent);
 
     // IMPORTANT ^^^^^ UPDATE ENTITY COMPONENT STORAGE AFTERWARDS
 

@@ -25,6 +25,14 @@ map + draw
 			draw functions call GameSystems
 			
 			
+chunk life cycle:
+	create:
+		create entity arrays
+		spawn resources
+	load from save:
+		deserialize entities into arrays
+		
+			
 draw flow:
 	game > GameCore > draw()
 		creates camera params

@@ -72,6 +72,12 @@ export class MapChunk extends BasicSerializableObject {
          */
         this.wireContents = make2DUndefinedArray(globalConfig.mapChunkSize, globalConfig.mapChunkSize);
 
+        /**
+         * Stores the contents of the wires layer
+         *  @type {Array<Array<?Entity>>}
+         */
+        this.dynamicContents = make2DUndefinedArray(globalConfig.mapChunkSize, globalConfig.mapChunkSize);
+
         /** @type {Array<Entity>} */
         this.containedEntities = [];
 
@@ -103,6 +109,7 @@ export class MapChunk extends BasicSerializableObject {
             regular: [],
             wires: [],
             resource: [],
+            dynamic: [],
         };
 
         /**
@@ -375,7 +382,7 @@ export class MapChunk extends BasicSerializableObject {
             let resourceVariants = Object.keys(enumResourceVariants);
             let variant = resourceVariants[rng.nextIntRange(0, resourceVariants.length)];
 
-            const resource = gMetaBuildingRegistry.findByClass(MetaResourcesBuilding).createEntity({
+            const resource = gMetaBuildingRegistry.findByClass(MetaResourcesBuilding).createStaticEntity({
                 root: this.root,
                 origin: new Vector(patchX + this.tileX, patchY + this.tileY),
                 rotation: 0,
@@ -473,8 +480,12 @@ export class MapChunk extends BasicSerializableObject {
         assert(localY < globalConfig.mapChunkSize, "Local Y is >= chunk size");
         if (layer === "regular") {
             return this.contents[localX][localY] || null;
-        } else {
+        } else if (layer === "wires") {
             return this.wireContents[localX][localY] || null;
+        } else if (layer === "resource") {
+            return this.resourceContents[localX][localY] || null;
+        } else if (layer === "dynamic") {
+            return this.dynamicContents[localX][localY] || null;
         }
     }
     /**
@@ -493,6 +504,8 @@ export class MapChunk extends BasicSerializableObject {
 
         const regularContent = this.contents[localX][localY];
         const wireContent = this.wireContents[localX][localY];
+        const resourceContent = this.resourceContents[localX][localY];
+        const dynamicContent = this.dynamicContents[localX][localY];
 
         const result = [];
         if (regularContent) {
@@ -500,6 +513,12 @@ export class MapChunk extends BasicSerializableObject {
         }
         if (wireContent) {
             result.push(wireContent);
+        }
+        if (resourceContent) {
+            result.push(resourceContent);
+        }
+        if (dynamicContent) {
+            result.push(dynamicContent);
         }
         return result;
     }
@@ -541,6 +560,8 @@ export class MapChunk extends BasicSerializableObject {
             oldContents = this.wireContents[localX][localY];
         } else if (layer === "resource") {
             oldContents = this.resourceContents[localX][localY];
+        } else if (layer === "dynamic") {
+            return this.dynamicContents[localX][localY] || null;
         }
 
         assert(contents === null || !oldContents, "Tile already used: " + tileX + " / " + tileY);
@@ -557,6 +578,8 @@ export class MapChunk extends BasicSerializableObject {
             this.wireContents[localX][localY] = contents;
         } else if (layer === "resource") {
             this.resourceContents[localX][localY] = contents;
+        } else if (layer === "dynamic") {
+            return this.dynamicContents[localX][localY] || null;
         }
 
         if (contents) {

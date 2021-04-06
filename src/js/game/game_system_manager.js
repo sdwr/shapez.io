@@ -25,6 +25,7 @@ import { BeltReaderSystem } from "./systems/belt_reader";
 import { FilterSystem } from "./systems/filter";
 import { ItemProducerSystem } from "./systems/item_producer";
 import { ResourceSystem } from "./systems/resources";
+import { DynamicMapEntitySystem } from "./systems/dynamic_map_entity";
 
 const logger = createLogger("game_system_manager");
 
@@ -49,6 +50,9 @@ export class GameSystemManager {
 
             /** @type {ResourceSystem} */
             resources: null,
+
+            /** @type {DynamicMapEntitySystem} */
+            dynamicMapEntities: null,
 
             /** @type {MinerSystem} */
             miner: null,
@@ -149,6 +153,8 @@ export class GameSystemManager {
         add("hub", HubSystem);
 
         add("staticMapEntities", StaticMapEntitySystem);
+
+        add("dynamicMapEntities", DynamicMapEntitySystem);
 
         add("wiredPins", WiredPinsSystem);
 

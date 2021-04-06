@@ -89,7 +89,7 @@ export class Entity extends BasicSerializableObject {
         const staticComp = this.components.StaticMapEntity;
         const buildingData = getBuildingDataFromCode(staticComp.code);
 
-        const clone = buildingData.metaInstance.createEntity({
+        const clone = buildingData.metaInstance.createStaticEntity({
             root: this.root,
             origin: staticComp.origin,
             originalRotation: staticComp.originalRotation,

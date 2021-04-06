@@ -103,7 +103,7 @@ export class GameLogic {
      * @returns {Entity}
      */
     tryPlaceBuilding({ origin, rotation, rotationVariant, originalRotation, variant, building }) {
-        const entity = building.createEntity({
+        const entity = building.createStaticEntity({
             root: this.root,
             origin,
             rotation,
