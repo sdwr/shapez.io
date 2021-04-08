@@ -117,11 +117,34 @@ export class SerializerInternal {
         this.deserializeComponents(root, entity, payload.components);
 
         root.entityMgr.registerEntity(entity, payload.uid);
-        root.map.placeStaticEntity(entity);
+        root.map.placeEntity(entity);
     }
 
     deserializeDynamicEntity(root, payload) {
         const dynamicData = payload.components.DynamicMapEntity;
+        assert(dynamicData, "entity has no dynamic data");
+
+        const code = dynamicData.code;
+        const data = getBuildingDataFromCode(code);
+
+        const metaBuilding = data.metaInstance;
+
+        const entity = metaBuilding.createDynamicEntity({
+            root,
+            origin: Vector.fromSerializedObject(dynamicData.origin),
+            speed: dynamicData.speed,
+            destination: Vector.fromSerializedObject(dynamicData.destination),
+            rotation: dynamicData.rotation,
+            rotationVariant: data.rotationVariant,
+            variant: data.variant,
+        });
+
+        entity.uid = payload.uid;
+
+        this.deserializeComponents(root, entity, payload.components);
+
+        root.entityMgr.registerEntity(entity, payload.uid);
+        root.map.placeEntity(entity);
     }
 
     /////// COMPONENTS ////

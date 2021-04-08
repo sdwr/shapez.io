@@ -111,7 +111,7 @@ export class HUDMassSelector extends BaseHUDPart {
                     continue;
                 }
 
-                if (!this.root.logic.tryDeleteBuilding(entity)) {
+                if (!this.root.logic.tryDeleteEntity(entity)) {
                     logger.error("Error in mass delete, could not remove building");
                 } else {
                     count++;
@@ -177,7 +177,7 @@ export class HUDMassSelector extends BaseHUDPart {
                 for (let i = 0; i < entityUids.length; ++i) {
                     const uid = entityUids[i];
                     const entity = this.root.entityMgr.findByUid(uid);
-                    if (!this.root.logic.tryDeleteBuilding(entity)) {
+                    if (!this.root.logic.tryDeleteEntity(entity)) {
                         logger.error("Error in mass cut, could not remove building");
                         this.selectedUids.delete(uid);
                     }
@@ -250,7 +250,7 @@ export class HUDMassSelector extends BaseHUDPart {
             for (let x = realTileStart.x; x <= realTileEnd.x; ++x) {
                 for (let y = realTileStart.y; y <= realTileEnd.y; ++y) {
                     const contents = this.root.map.getLayerContentXY(x, y, this.root.currentLayer);
-                    if (contents && this.root.logic.canDeleteBuilding(contents)) {
+                    if (contents && this.root.logic.canDeleteEntity(contents)) {
                         this.selectedUids.add(contents.uid);
                     }
                 }
@@ -301,7 +301,7 @@ export class HUDMassSelector extends BaseHUDPart {
             for (let x = realTileStart.x; x <= realTileEnd.x; ++x) {
                 for (let y = realTileStart.y; y <= realTileEnd.y; ++y) {
                     const contents = this.root.map.getLayerContentXY(x, y, this.root.currentLayer);
-                    if (contents && this.root.logic.canDeleteBuilding(contents)) {
+                    if (contents && this.root.logic.canDeleteEntity(contents)) {
                         // Prevent rendering the overlay twice
                         const uid = contents.uid;
                         if (renderedUids.has(uid)) {

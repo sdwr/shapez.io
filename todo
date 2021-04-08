@@ -49,7 +49,7 @@ add workers
 	easiest movement is straight-line moving back and forth
 	harder is pathfinding
 	
-	needs MovementComponent DynamicMapEntityComponent
+	needs DynamicMapEntityComponent
 		fields: speed, destination, origin
 		triggers logic when hits destination (message sent to workersystem?)
 			
@@ -60,22 +60,24 @@ add workers
 				have to know what chunks are on path
 		
 	needs MovementSystem DynamicMapEntitySystem
+	
+	add worker sprite
+	
 		
 		add deserialize
 			make sure deserializie adds to chunk
 		add createDynamicEntity
 		add metaunit base + extensions
-		add metaunit registry
 		complete dynamicEntitySystem drawChunk() by calling metaunit base per entity
 		
-		update everywhere that uses createStaticEntity
-			entity.js clone()
-			
+		rename MetaBuilding + registry to MetaEntity
+		do something with defaultVariant
 			
 		how to create
 		meta_unit system like buildings?
 		need one place to add components from 
 		and load sprites/animations
+		done - updated map.placeEntity()
 		
 		
 		

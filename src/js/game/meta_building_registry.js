@@ -31,6 +31,7 @@ import { enumWireVariant } from "./components/wire";
 import { KEYMAPPINGS } from "./key_action_mapper";
 import { defaultBuildingVariant } from "./meta_building";
 import { enumResourceVariants, MetaResourcesBuilding } from "./buildings/meta_resources";
+import { MetaWorker } from "./buildings/units/worker";
 
 const logger = createLogger("building_registry");
 
@@ -61,6 +62,10 @@ export function initMetaBuildingRegistry() {
     gMetaBuildingRegistry.register(MetaComparatorBuilding);
     gMetaBuildingRegistry.register(MetaItemProducerBuilding);
     gMetaBuildingRegistry.register(MetaResourcesBuilding);
+    gMetaBuildingRegistry.register(MetaWorker);
+
+    // Units
+    registerBuildingVariant(66, MetaWorker, defaultBuildingVariant);
 
     // Resources
     registerBuildingVariant(62, MetaResourcesBuilding, defaultBuildingVariant);
@@ -196,22 +201,22 @@ export function initMetaBuildingRegistry() {
     if (G_IS_DEV) {
         gMetaBuildingRegistry.entries.forEach(metaBuilding => {
             const id = metaBuilding.getId();
-            if (!["hub"].includes(id)) {
-                if (!KEYMAPPINGS.buildings[id]) {
-                    assertAlways(
-                        false,
-                        "Building " + id + " has no keybinding assigned! Add it to key_action_mapper.js"
-                    );
-                }
+            // if (!["hub"].includes(id)) {
+            //     if (!KEYMAPPINGS.buildings[id]) {
+            //         assertAlways(
+            //             false,
+            //             "Building " + id + " has no keybinding assigned! Add it to key_action_mapper.js"
+            //         );
+            //     }
 
-                if (!T.buildings[id]) {
-                    assertAlways(false, "Translation for building " + id + " missing!");
-                }
+            //     if (!T.buildings[id]) {
+            //         assertAlways(false, "Translation for building " + id + " missing!");
+            //     }
 
-                if (!T.buildings[id].default) {
-                    assertAlways(false, "Translation for building " + id + " missing (default variant)!");
-                }
-            }
+            //     if (!T.buildings[id].default) {
+            //         assertAlways(false, "Translation for building " + id + " missing (default variant)!");
+            //     }
+            // }
         });
     }
 

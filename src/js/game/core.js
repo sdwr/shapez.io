@@ -183,7 +183,7 @@ export class GameCore {
             rotationVariant: 0,
             variant: defaultBuildingVariant,
         });
-        this.root.map.placeStaticEntity(hub);
+        this.root.map.placeEntity(hub);
         this.root.entityMgr.registerEntity(hub);
     }
 

@@ -7,6 +7,8 @@ import { MinerComponent } from "../components/miner";
 import { Entity } from "../entity";
 import { GameSystemWithFilter } from "../game_system_with_filter";
 import { MapChunkView } from "../map_chunk_view";
+import { gMetaBuildingRegistry } from "../../core/global_registries";
+import { MetaWorker } from "../buildings/units/worker";
 
 export class MinerSystem extends GameSystemWithFilter {
     constructor(root) {
@@ -16,22 +18,53 @@ export class MinerSystem extends GameSystemWithFilter {
 
         this.root.signals.prePlacementCheck.add(this.prePlacementCheck, this);
 
-        this.root.signals.entityAdded.add(this.onEntityChanged, this);
+        this.root.signals.entityAdded.add(this.onEntityAdded, this);
         this.root.signals.entityChanged.add(this.onEntityChanged, this);
         this.root.signals.entityDestroyed.add(this.onEntityChanged, this);
+    }
+
+    /**
+     * Called whenever an entity got added
+     * @param {Entity} entity
+     */
+    onEntityAdded(entity) {
+        const minerComp = entity.components.Miner;
+        if (minerComp) {
+            this.spawnWorkers(entity);
+        }
+    }
+
+    /**
+     * Try to spawn workers for mine
+     * @param {Entity} entity
+     */
+    spawnWorkers(entity) {
+        const minerComp = entity.components.Miner;
+        for (let i = 0; i < 4; i++) {
+            let worker = this.spawnUnitAt(gMetaBuildingRegistry.findByClass(MetaWorker), new Vector(0, 0));
+            worker.components.DynamicMapEntity.updateDestination(entity.components.StaticMapEntity.origin);
+        }
+    }
+
+    spawnUnitAt(metaBuilding, tile) {
+        const entity = this.root.logic.trySpawnUnit({
+            origin: tile,
+            speed: 1,
+            destination: tile,
+            rotation: 0,
+            rotationVariant: 0,
+            variant: "default",
+            building: metaBuilding,
+        });
+
+        return entity;
     }
 
     /**
      * Called whenever an entity got changed
      * @param {Entity} entity
      */
-    onEntityChanged(entity) {
-        const minerComp = entity.components.Miner;
-        if (minerComp && minerComp.chainable) {
-            // Miner component, need to recompute
-            this.needsRecompute = true;
-        }
-    }
+    onEntityChanged(entity) {}
 
     /**
      * Performs pre-placement checks

@@ -332,7 +332,7 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
         const tile = worldPos.toTileSpace();
         const contents = this.root.map.getTileContent(tile, this.root.currentLayer);
         if (contents) {
-            if (this.root.logic.tryDeleteBuilding(contents)) {
+            if (this.root.logic.tryDeleteEntity(contents)) {
                 this.root.soundProxy.playUi(SOUNDS.destroyBuilding);
                 return true;
             }
@@ -779,7 +779,7 @@ export class HUDBuildingPlacerLogic extends BaseHUDPart {
                         // Deletion
                         const contents = this.root.map.getLayerContentXY(x0, y0, this.root.currentLayer);
                         if (contents && !contents.queuedForDestroy && !contents.destroyed) {
-                            if (this.root.logic.tryDeleteBuilding(contents)) {
+                            if (this.root.logic.tryDeleteEntity(contents)) {
                                 anythingDeleted = true;
                             }
                         }

@@ -6,6 +6,7 @@ import { StaticMapEntityComponent } from "./components/static_map_entity";
 import { Entity } from "./entity";
 import { GameRoot } from "./root";
 import { getCodeFromBuildingData } from "./building_codes";
+import { DynamicMapEntityComponent } from "./components/dynamic_map_entity";
 
 export const defaultBuildingVariant = "default";
 
@@ -208,6 +209,24 @@ export class MetaBuilding {
                 rotation,
                 originalRotation,
                 tileSize: this.getDimensions(variant).copy(),
+                code: getCodeFromBuildingData(this, variant, rotationVariant),
+            })
+        );
+        this.setupEntityComponents(entity, root);
+        this.updateVariants(entity, rotationVariant, variant);
+        return entity;
+    }
+
+    createDynamicEntity({ root, origin, speed, destination, rotation, rotationVariant, variant }) {
+        const entity = new Entity(root);
+        entity.layer = this.getLayer();
+        entity.addComponent(
+            new DynamicMapEntityComponent({
+                origin: new Vector(origin.x, origin.y),
+                tileSize: this.getDimensions(variant).copy(),
+                speed,
+                destination,
+                rotation,
                 code: getCodeFromBuildingData(this, variant, rotationVariant),
             })
         );

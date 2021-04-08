@@ -92,6 +92,34 @@ export class GameLogic {
     }
 
     /**
+     * Attempts to spawn new unit
+     * @param {object} param0
+     * @param {Vector} param0.origin
+     * @param {number} param0.speed
+     * @param {Vector} param0.destination
+     * @param {number} param0.rotation
+     * @param {number} param0.rotationVariant
+     * @param {string} param0.variant
+     * @param {MetaBuilding} param0.building
+     */
+
+    trySpawnUnit({ origin, speed, destination, rotation, rotationVariant, variant, building }) {
+        const entity = building.createDynamicEntity({
+            root: this.root,
+            origin,
+            speed,
+            destination,
+            rotation,
+            rotationVariant,
+            variant,
+        });
+
+        this.root.map.placeEntity(entity);
+        this.root.entityMgr.registerEntity(entity);
+        return entity;
+    }
+
+    /**
      * Attempts to place the given building
      * @param {object} param0
      * @param {Vector} param0.origin
@@ -113,7 +141,7 @@ export class GameLogic {
         });
         if (this.checkCanPlaceEntity(entity)) {
             this.freeEntityAreaBeforeBuild(entity);
-            this.root.map.placeStaticEntity(entity);
+            this.root.map.placeEntity(entity);
             this.root.entityMgr.registerEntity(entity);
             return entity;
         }
@@ -137,7 +165,7 @@ export class GameLogic {
                         contents.components.StaticMapEntity.getMetaBuilding().getIsReplaceable(),
                         "Tried to replace non-repleaceable entity"
                     );
-                    if (!this.tryDeleteBuilding(contents)) {
+                    if (!this.tryDeleteEntity(contents)) {
                         assertAlways(false, "Tried to replace non-repleaceable entity #2");
                     }
                 }
@@ -167,24 +195,25 @@ export class GameLogic {
     }
 
     /**
-     * Returns whether the given building can get removed
-     * @param {Entity} building
+     * Returns whether the given entity can get removed
+     * @param {Entity} entity
      */
-    canDeleteBuilding(building) {
-        const staticComp = building.components.StaticMapEntity;
-        return staticComp.getMetaBuilding().getIsRemovable();
+    canDeleteEntity(entity) {
+        const staticComp = entity.components.StaticMapEntity;
+        const dynamicComp = entity.components.DynamicMapEntity;
+        return dynamicComp || staticComp.getMetaBuilding().getIsRemovable();
     }
 
     /**
-     * Tries to delete the given building
-     * @param {Entity} building
+     * Tries to delete the given entity
+     * @param {Entity} entity
      */
-    tryDeleteBuilding(building) {
-        if (!this.canDeleteBuilding(building)) {
+    tryDeleteEntity(entity) {
+        if (!this.canDeleteEntity(entity)) {
             return false;
         }
-        this.root.map.removeStaticEntity(building);
-        this.root.entityMgr.destroyEntity(building);
+        this.root.map.removeEntity(entity);
+        this.root.entityMgr.destroyEntity(entity);
         this.root.entityMgr.processDestroyList();
         return true;
     }

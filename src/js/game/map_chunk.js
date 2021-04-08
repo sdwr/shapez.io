@@ -73,10 +73,10 @@ export class MapChunk extends BasicSerializableObject {
         this.wireContents = make2DUndefinedArray(globalConfig.mapChunkSize, globalConfig.mapChunkSize);
 
         /**
-         * Stores the contents of the wires layer
-         *  @type {Array<Array<?Entity>>}
+         * Stores the contents of the dynamic layer
+         *  @type {Array<Entity>}
          */
-        this.dynamicContents = make2DUndefinedArray(globalConfig.mapChunkSize, globalConfig.mapChunkSize);
+        this.dynamicContents = [];
 
         /** @type {Array<Entity>} */
         this.containedEntities = [];
@@ -149,12 +149,30 @@ export class MapChunk extends BasicSerializableObject {
         this.lowerLayer = make2DUndefinedArray(globalConfig.mapChunkSize, globalConfig.mapChunkSize);
         for (let i = 0; i < this.containedEntities.length; i++) {
             let entity = this.containedEntities[i];
-            this.root.logic.tryDeleteBuilding(entity);
+            this.root.logic.tryDeleteEntity(entity);
         }
     }
 
     isStart() {
         return this.x == 0 && this.y == 0;
+    }
+
+    addDynamicEntityToChunk(entity) {
+        this.dynamicContents.push(entity);
+    }
+
+    /**
+     * Generates a patch filled with the given item
+     * @param {Entity} entity
+     */
+    removeDynamicEntityFromChunk(entity) {
+        for (let i = 0; i < this.dynamicContents.length; i++) {
+            let content = this.dynamicContents[i];
+            if (entity.uid === content.uid) {
+                this.dynamicContents.splice(i, 1);
+                return;
+            }
+        }
     }
 
     /**
@@ -391,7 +409,7 @@ export class MapChunk extends BasicSerializableObject {
                 variant: variant,
             });
 
-            this.root.map.placeStaticEntity(resource);
+            this.root.map.placeEntity(resource);
             this.root.entityMgr.registerEntity(resource);
         }
     }
@@ -484,8 +502,6 @@ export class MapChunk extends BasicSerializableObject {
             return this.wireContents[localX][localY] || null;
         } else if (layer === "resource") {
             return this.resourceContents[localX][localY] || null;
-        } else if (layer === "dynamic") {
-            return this.dynamicContents[localX][localY] || null;
         }
     }
     /**
@@ -505,7 +521,6 @@ export class MapChunk extends BasicSerializableObject {
         const regularContent = this.contents[localX][localY];
         const wireContent = this.wireContents[localX][localY];
         const resourceContent = this.resourceContents[localX][localY];
-        const dynamicContent = this.dynamicContents[localX][localY];
 
         const result = [];
         if (regularContent) {
@@ -516,9 +531,6 @@ export class MapChunk extends BasicSerializableObject {
         }
         if (resourceContent) {
             result.push(resourceContent);
-        }
-        if (dynamicContent) {
-            result.push(dynamicContent);
         }
         return result;
     }
@@ -560,8 +572,6 @@ export class MapChunk extends BasicSerializableObject {
             oldContents = this.wireContents[localX][localY];
         } else if (layer === "resource") {
             oldContents = this.resourceContents[localX][localY];
-        } else if (layer === "dynamic") {
-            return this.dynamicContents[localX][localY] || null;
         }
 
         assert(contents === null || !oldContents, "Tile already used: " + tileX + " / " + tileY);
@@ -578,8 +588,6 @@ export class MapChunk extends BasicSerializableObject {
             this.wireContents[localX][localY] = contents;
         } else if (layer === "resource") {
             this.resourceContents[localX][localY] = contents;
-        } else if (layer === "dynamic") {
-            return this.dynamicContents[localX][localY] || null;
         }
 
         if (contents) {

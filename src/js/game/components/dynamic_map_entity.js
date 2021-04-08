@@ -1,6 +1,10 @@
+import { globalConfig } from "../../core/config";
 import { Vector } from "../../core/vector";
 import { types } from "../../savegame/serialization";
 import { Component } from "../component";
+import { getBuildingDataFromCode } from "../building_codes";
+import { AtlasSprite } from "../../core/sprites";
+import { DrawParameters } from "../../core/draw_parameters";
 
 export class DynamicMapEntityComponent extends Component {
     static getId() {
@@ -11,52 +15,103 @@ export class DynamicMapEntityComponent extends Component {
         // cachedMinedItem is not serialized.
         return {
             origin: types.tileVector,
-            tileSize: types.vector,
             speed: types.uint,
             destination: types.vector,
             rotation: types.float,
+
+            //new registration or use building?
+            code: types.uint,
         };
+    }
+
+    /**
+     * Returns the effective tile size
+     * @returns {Vector}
+     */
+    getTileSize() {
+        return getBuildingDataFromCode(this.code).tileSize;
+    }
+
+    /**
+     * Returns the sprite
+     * @returns {AtlasSprite}
+     */
+    getSprite() {
+        return getBuildingDataFromCode(this.code).sprite;
+    }
+
+    /**
+     * Returns the blueprint sprite
+     * @returns {AtlasSprite}
+     */
+    getBlueprintSprite() {
+        return getBuildingDataFromCode(this.code).blueprintSprite;
+    }
+
+    /**
+     * Returns the silhouette color
+     * @returns {string}
+     */
+    getSilhouetteColor() {
+        return getBuildingDataFromCode(this.code).silhouetteColor;
+    }
+
+    /**
+     * Returns the meta building
+     * @returns {import("../meta_building").MetaBuilding}
+     */
+    getMetaBuilding() {
+        return getBuildingDataFromCode(this.code).metaInstance;
+    }
+
+    /**
+     * Returns the buildings variant
+     * @returns {string}
+     */
+    getVariant() {
+        return getBuildingDataFromCode(this.code).variant;
     }
 
     /**
      *
      * @param {object} param0
      * @param {Vector=} param0.origin Origin (Top Left corner) of the entity
-     * @param {Vector=} param0.tileSize Size of the entity in tiles
      * @param {number=} param0.speed Speed of the entity in tiles/s
      * @param {Vector=} param0.destination Destination tile
      * @param {number=} param0.rotation Rotation in degrees. Must be multiple of 90
+     * @param {number=} param0.code Building code
      */
-    constructor({
-        origin = new Vector(),
-        tileSize = new Vector(0.3, 0.3),
-        speed = 1,
-        destination = new Vector(),
-        rotation = 0,
-    }) {
+    constructor({ origin = new Vector(), speed = 1, destination = new Vector(), rotation = 0, code = 0 }) {
         super();
         this.origin = origin;
-        this.tileSize = tileSize;
         this.speed = speed;
         this.destination = destination;
         this.rotation = rotation;
+        this.code = code;
     }
 
     //careful of origin vs center
     // origin of entities is top left corner
-    updatePosition(elapsedMs) {
+    calculatePosition(elapsedMs) {
         // let centerOffset = this.tileSize.divideScalar(2);
         // let center = this.origin.add(centerOffset);
+        let newPosition = this.origin;
+        if (this.destination.equals(this.origin)) {
+            return null;
+        }
+
         let dist = this.destination.sub(this.origin);
         let distScalar = dist.length();
 
         let distanceTraveled = this.speed * elapsedMs;
         if (distanceTraveled >= distScalar) {
-            this.origin = this.destination;
+            newPosition = this.destination;
         } else {
             let fractionTraveled = distanceTraveled / distScalar;
-            this.origin.addInplace(dist.multiplyScalar(fractionTraveled));
+            newPosition = this.origin.add(dist.multiplyScalar(fractionTraveled));
         }
+
+        return newPosition;
     }
 
     /**
@@ -66,5 +121,38 @@ export class DynamicMapEntityComponent extends Component {
     updateDestination(destination) {
         this.destination = destination;
         this.rotation = Math.round(Math.degrees(destination.sub(this.origin).angle()));
+    }
+
+    drawSprite(parameters, sprite, extrudePixels = 0) {
+        const size = this.getTileSize();
+        let worldX = this.origin.x * globalConfig.tileSize;
+        let worldY = this.origin.y * globalConfig.tileSize;
+
+        if (this.rotation === 0) {
+            // Early out, is faster
+            sprite.drawCached(
+                parameters,
+                worldX - extrudePixels * size.x,
+                worldY - extrudePixels * size.y,
+                globalConfig.tileSize * size.x + 2 * extrudePixels * size.x,
+                globalConfig.tileSize * size.y + 2 * extrudePixels * size.y
+            );
+        } else {
+            const rotationCenterX = worldX + globalConfig.halfTileSize;
+            const rotationCenterY = worldY + globalConfig.halfTileSize;
+
+            parameters.context.translate(rotationCenterX, rotationCenterY);
+            parameters.context.rotate(Math.radians(this.rotation));
+            sprite.drawCached(
+                parameters,
+                -globalConfig.halfTileSize - extrudePixels * size.x,
+                -globalConfig.halfTileSize - extrudePixels * size.y,
+                globalConfig.tileSize * size.x + 2 * extrudePixels * size.x,
+                globalConfig.tileSize * size.y + 2 * extrudePixels * size.y,
+                false // no clipping possible here
+            );
+            parameters.context.rotate(-Math.radians(this.rotation));
+            parameters.context.translate(-rotationCenterX, -rotationCenterY);
+        }
     }
 }

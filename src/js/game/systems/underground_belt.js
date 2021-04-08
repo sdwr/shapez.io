@@ -138,7 +138,7 @@ export class UndergroundBeltSystem extends GameSystemWithFilter {
                     currentPos.addInplace(offset);
                     const contents = this.root.map.getTileContent(currentPos, entity.layer);
                     assert(contents, "Invalid smart underground belt logic");
-                    this.root.logic.tryDeleteBuilding(contents);
+                    this.root.logic.tryDeleteEntity(contents);
                 }
             }
 
@@ -195,8 +195,8 @@ export class UndergroundBeltSystem extends GameSystemWithFilter {
                 }
 
                 // All good, can remove
-                this.root.logic.tryDeleteBuilding(entityBefore);
-                this.root.logic.tryDeleteBuilding(entityAfter);
+                this.root.logic.tryDeleteEntity(entityBefore);
+                this.root.logic.tryDeleteEntity(entityAfter);
             }
         }
     }

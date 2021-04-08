@@ -142,7 +142,7 @@ export class WiredPinsSystem extends GameSystemWithFilter {
                     collidingEntity.components.StaticMapEntity.getMetaBuilding().getIsReplaceable(),
                     "Tried to replace non-repleaceable entity for pins"
                 );
-                if (!this.root.logic.tryDeleteBuilding(collidingEntity)) {
+                if (!this.root.logic.tryDeleteEntity(collidingEntity)) {
                     assertAlways(false, "Tried to replace non-repleaceable entity for pins #2");
                 }
             }

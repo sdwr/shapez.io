@@ -22,7 +22,7 @@ export class HUDLeverToggle extends BaseHUDPart {
                     leverComp.toggled = !leverComp.toggled;
                     return STOP_PROPAGATION;
                 } else if (button === enumMouseButton.right) {
-                    this.root.logic.tryDeleteBuilding(contents);
+                    this.root.logic.tryDeleteEntity(contents);
                     return STOP_PROPAGATION;
                 }
             }

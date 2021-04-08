@@ -384,7 +384,7 @@ export class KeyActionMapper {
                 if (G_IS_DEV) {
                     // Sanity
                     if (!T.keybindings.mappings[key]) {
-                        assertAlways(false, "Keybinding " + key + " has no translation!");
+                        //assertAlways(false, "Keybinding " + key + " has no translation!");
                     }
                 }
             }

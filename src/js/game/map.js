@@ -124,7 +124,6 @@ export class BaseMap extends BasicSerializableObject {
      */
     getLayerContentXY(x, y, layer) {
         const chunk = this.getChunkAtTileOrNull(x, y);
-        console.log(chunk);
         return chunk && chunk.getLayerContentFromWorldCoords(x, y, layer);
     }
 
@@ -190,19 +189,30 @@ export class BaseMap extends BasicSerializableObject {
     }
 
     /**
-     * Places an entity with the StaticMapEntity component
+     * Places an entity with the StaticMapEntity/DynamicMapEntity component
      * @param {Entity} entity
      */
-    placeStaticEntity(entity) {
-        assert(entity.components.StaticMapEntity, "Entity is not static");
+    placeEntity(entity) {
         const staticComp = entity.components.StaticMapEntity;
-        const rect = staticComp.getTileSpaceBounds();
-        for (let dx = 0; dx < rect.w; ++dx) {
-            for (let dy = 0; dy < rect.h; ++dy) {
-                const x = rect.x + dx;
-                const y = rect.y + dy;
-                this.getOrCreateChunkAtTile(x, y).setLayerContentFromWorldCords(x, y, entity, entity.layer);
+        const dynamicComp = entity.components.DynamicMapEntity;
+        assert(staticComp || dynamicComp, "Entity is not creatable on map");
+        if (staticComp) {
+            const rect = staticComp.getTileSpaceBounds();
+            for (let dx = 0; dx < rect.w; ++dx) {
+                for (let dy = 0; dy < rect.h; ++dy) {
+                    const x = rect.x + dx;
+                    const y = rect.y + dy;
+                    this.getOrCreateChunkAtTile(x, y).setLayerContentFromWorldCords(
+                        x,
+                        y,
+                        entity,
+                        entity.layer
+                    );
+                }
             }
+        } else if (dynamicComp) {
+            let origin = dynamicComp.origin;
+            this.getOrCreateChunkAtTile(origin.x, origin.y).addDynamicEntityToChunk(entity);
         }
     }
 
@@ -210,16 +220,22 @@ export class BaseMap extends BasicSerializableObject {
      * Removes an entity with the StaticMapEntity component
      * @param {Entity} entity
      */
-    removeStaticEntity(entity) {
-        assert(entity.components.StaticMapEntity, "Entity is not static");
+    removeEntity(entity) {
         const staticComp = entity.components.StaticMapEntity;
-        const rect = staticComp.getTileSpaceBounds();
-        for (let dx = 0; dx < rect.w; ++dx) {
-            for (let dy = 0; dy < rect.h; ++dy) {
-                const x = rect.x + dx;
-                const y = rect.y + dy;
-                this.getOrCreateChunkAtTile(x, y).setLayerContentFromWorldCords(x, y, null, entity.layer);
+        const dynamicComp = entity.components.DynamicMapEntity;
+        assert(staticComp || dynamicComp, "Entity is not deletable on map");
+        if (staticComp) {
+            const rect = staticComp.getTileSpaceBounds();
+            for (let dx = 0; dx < rect.w; ++dx) {
+                for (let dy = 0; dy < rect.h; ++dy) {
+                    const x = rect.x + dx;
+                    const y = rect.y + dy;
+                    this.getOrCreateChunkAtTile(x, y).setLayerContentFromWorldCords(x, y, null, entity.layer);
+                }
             }
+        } else if (dynamicComp) {
+            let origin = dynamicComp.origin;
+            this.getOrCreateChunkAtTile(origin.x, origin.y).removeDynamicEntityFromChunk(entity);
         }
     }
 

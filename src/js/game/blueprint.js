@@ -159,7 +159,7 @@ export class Blueprint {
                 const clone = entity.clone();
                 clone.components.StaticMapEntity.origin.addInplace(tile);
                 root.logic.freeEntityAreaBeforeBuild(clone);
-                root.map.placeStaticEntity(clone);
+                root.map.placeEntity(clone);
                 root.entityMgr.registerEntity(clone);
                 count++;
             }
