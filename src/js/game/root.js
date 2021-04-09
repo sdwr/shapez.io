@@ -151,6 +151,7 @@ export class GameRoot {
             entityComponentRemoved: /** @type {TypedSignal<[Entity]>} */ (new Signal()),
             entityQueuedForDestroy: /** @type {TypedSignal<[Entity]>} */ (new Signal()),
             entityDestroyed: /** @type {TypedSignal<[Entity]>} */ (new Signal()),
+            entityStateChange: /** @type {TypedSignal<[Entity]>} */ (new Signal()),
 
             // Global
             resized: /** @type {TypedSignal<[number, number]>} */ (new Signal()),

@@ -5,7 +5,6 @@ import { Component } from "../component";
 import { getBuildingDataFromCode } from "../building_codes";
 import { AtlasSprite } from "../../core/sprites";
 import { BaseItem } from "../base_item";
-import { RESOURCE_ITEM_SINGLETONS } from "../items/resource_item";
 import { typeItemSingleton } from "../item_resolver";
 
 /**
@@ -109,9 +108,17 @@ export class DynamicMapEntityComponent extends Component {
         this.speed = speed;
         this.destination = destination;
         this.rotation = rotation;
-        this.state = state;
         this.code = code;
         this.carrying = carrying;
+        this.state = state;
+    }
+
+    /**
+     *
+     * @param {enumUnitStates} state
+     */
+    changeState(state) {
+        this.state = state;
     }
 
     //careful of origin vs center
@@ -143,7 +150,7 @@ export class DynamicMapEntityComponent extends Component {
      *
      * @param {Vector=} destination
      */
-    updateDestination(destination) {
+    setDestination(destination) {
         this.destination = destination;
         this.rotation = Math.round(Math.degrees(destination.sub(this.origin).angle()));
         this.state = enumUnitStates.moving;

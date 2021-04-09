@@ -50,8 +50,8 @@ export class MapChunkView extends MapChunk {
 
         systems.itemEjector.drawChunk(parameters, this);
         systems.itemAcceptor.drawChunk(parameters, this);
-        systems.dynamicMapEntities.drawChunk(parameters, this);
         systems.miner.drawChunk(parameters, this);
+        systems.dynamicMapEntities.drawChunk(parameters, this);
     }
 
     /**

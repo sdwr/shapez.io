@@ -43,17 +43,26 @@ export class MinerSystem extends GameSystemWithFilter {
      */
     spawnWorkers(entity) {
         const minerComp = entity.components.Miner;
+        const target = entity.uid;
         for (let i = 0; i < 4; i++) {
-            let worker = this.spawnUnitAt(gMetaBuildingRegistry.findByClass(MetaWorker), new Vector(0, 0));
-            worker.components.DynamicMapEntity.updateDestination(entity.components.StaticMapEntity.origin);
+            let worker = this.spawnUnitAt(
+                gMetaBuildingRegistry.findByClass(MetaWorker),
+                new Vector(4, 4),
+                target
+            );
+            this.root.systemMgr.systems.dynamicMapEntities.setDestination(
+                worker,
+                entity.components.StaticMapEntity.origin
+            );
         }
     }
 
-    spawnUnitAt(metaBuilding, tile) {
+    spawnUnitAt(metaBuilding, tile, target) {
         const entity = this.root.logic.trySpawnUnit({
             origin: tile,
             speed: 1,
             destination: tile,
+            target: target,
             rotation: 0,
             rotationVariant: 0,
             variant: "default",
@@ -195,7 +204,7 @@ export class MinerSystem extends GameSystemWithFilter {
             let unitDynamic = unit.components.DynamicMapEntity;
             if (unitDynamic.state == enumUnitStates.idle) {
                 unitDynamic.carrying = item;
-                unitDynamic.updateDestination(new Vector(0, 0));
+                this.root.systemMgr.systems.dynamicMapEntities.setDestination(unit, new Vector(4, 4));
                 return true;
             }
         }

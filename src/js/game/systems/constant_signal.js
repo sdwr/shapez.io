@@ -133,7 +133,7 @@ export class ConstantSignalSystem extends GameSystemWithFilter {
                     return;
                 }
 
-                this.root.logic.tryDeleteBuilding(entityRef);
+                this.root.logic.tryDeleteEntity(entityRef);
             });
         }
     }

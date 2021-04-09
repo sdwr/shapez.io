@@ -134,6 +134,7 @@ export class SerializerInternal {
             origin: Vector.fromSerializedObject(dynamicData.origin),
             speed: dynamicData.speed,
             destination: Vector.fromSerializedObject(dynamicData.destination),
+            target: dynamicData.target,
             rotation: dynamicData.rotation,
             rotationVariant: data.rotationVariant,
             variant: data.variant,

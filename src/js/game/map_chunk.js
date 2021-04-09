@@ -365,6 +365,9 @@ export class MapChunk extends BasicSerializableObject {
      * Generates the lower layer "terrain"
      */
     generateLowerLayer() {
+        if (this.x == 0 && this.y == 0) {
+            return;
+        }
         const rng = new RandomNumberGenerator(" " + performance.now() + this.root.map.seed);
 
         // if (this.generatePredefined(rng)) {

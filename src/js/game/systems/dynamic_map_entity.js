@@ -1,15 +1,40 @@
 import { globalConfig } from "../../core/config";
 import { DrawParameters } from "../../core/draw_parameters";
-import { enumDirectionToVector } from "../../core/vector";
-import { DynamicMapEntityComponent } from "../components/dynamic_map_entity";
+import { DynamicMapEntityComponent, enumUnitStates } from "../components/dynamic_map_entity";
 import { GameSystemWithFilter } from "../game_system_with_filter";
 import { MapChunkView } from "../map_chunk_view";
+import { Entity } from "../entity";
+import { Vector } from "../../core/vector";
 
 export class DynamicMapEntitySystem extends GameSystemWithFilter {
     constructor(root) {
         super(root, [DynamicMapEntityComponent]);
 
         this.lastFrame = this.root.time.now();
+    }
+
+    /**
+     * @param {Entity} entity
+     * @param {enumUnitStates} state
+     */
+    changeUnitState(entity, state) {
+        const dynamicComp = entity.components.DynamicMapEntity;
+        if (dynamicComp) {
+            dynamicComp.changeState(state);
+            this.root.signals.entityStateChange.dispatch(entity);
+        }
+    }
+
+    /**
+     * @param {Entity} entity
+     * @param {Vector} destination
+     */
+    setDestination(entity, destination) {
+        const dynamicComp = entity.components.DynamicMapEntity;
+        if (dynamicComp) {
+            dynamicComp.setDestination(destination);
+            this.root.signals.entityStateChange.dispatch(entity);
+        }
     }
 
     update() {
@@ -58,13 +83,8 @@ export class DynamicMapEntitySystem extends GameSystemWithFilter {
             }
             const item = dynamicComp.carrying;
             if (item) {
-                let pos = dynamicComp.origin.toWorldSpace();
-                item.drawItemCenteredClipped(
-                    pos.x + 0.5,
-                    pos.y + 0.5,
-                    parameters,
-                    globalConfig.defaultItemDiameter
-                );
+                let pos = dynamicComp.origin.addScalar(0.5).toWorldSpace();
+                item.drawItemCenteredClipped(pos.x, pos.y, parameters, globalConfig.defaultItemDiameter);
             }
         }
     }
