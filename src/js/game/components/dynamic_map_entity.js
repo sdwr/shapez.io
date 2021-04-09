@@ -4,7 +4,18 @@ import { types } from "../../savegame/serialization";
 import { Component } from "../component";
 import { getBuildingDataFromCode } from "../building_codes";
 import { AtlasSprite } from "../../core/sprites";
-import { DrawParameters } from "../../core/draw_parameters";
+import { BaseItem } from "../base_item";
+import { RESOURCE_ITEM_SINGLETONS } from "../items/resource_item";
+import { typeItemSingleton } from "../item_resolver";
+
+/**
+ * @enum {string}
+ */
+export const enumUnitStates = {
+    idle: "idle",
+    moving: "moving",
+    building: "building",
+};
 
 export class DynamicMapEntityComponent extends Component {
     static getId() {
@@ -19,7 +30,8 @@ export class DynamicMapEntityComponent extends Component {
             destination: types.vector,
             rotation: types.float,
 
-            //new registration or use building?
+            state: types.string,
+            carrying: types.nullable(typeItemSingleton),
             code: types.uint,
         };
     }
@@ -79,15 +91,27 @@ export class DynamicMapEntityComponent extends Component {
      * @param {number=} param0.speed Speed of the entity in tiles/s
      * @param {Vector=} param0.destination Destination tile
      * @param {number=} param0.rotation Rotation in degrees. Must be multiple of 90
+     * @param {string=} param0.state Unit state
+     * @param {BaseItem} param0.carrying Item held
      * @param {number=} param0.code Building code
      */
-    constructor({ origin = new Vector(), speed = 1, destination = new Vector(), rotation = 0, code = 0 }) {
+    constructor({
+        origin = new Vector(),
+        speed = 1,
+        destination = new Vector(),
+        rotation = 0,
+        state = enumUnitStates.idle,
+        carrying = null,
+        code = 0,
+    }) {
         super();
         this.origin = origin;
         this.speed = speed;
         this.destination = destination;
         this.rotation = rotation;
+        this.state = state;
         this.code = code;
+        this.carrying = carrying;
     }
 
     //careful of origin vs center
@@ -97,6 +121,7 @@ export class DynamicMapEntityComponent extends Component {
         // let center = this.origin.add(centerOffset);
         let newPosition = this.origin;
         if (this.destination.equals(this.origin)) {
+            this.state = enumUnitStates.idle;
             return null;
         }
 
@@ -121,6 +146,7 @@ export class DynamicMapEntityComponent extends Component {
     updateDestination(destination) {
         this.destination = destination;
         this.rotation = Math.round(Math.degrees(destination.sub(this.origin).angle()));
+        this.state = enumUnitStates.moving;
     }
 
     drawSprite(parameters, sprite, extrudePixels = 0) {
@@ -154,5 +180,16 @@ export class DynamicMapEntityComponent extends Component {
             parameters.context.rotate(-Math.radians(this.rotation));
             parameters.context.translate(-rotationCenterX, -rotationCenterY);
         }
+    }
+    /**
+     * Transforms from local tile space to global tile space
+     * @param {Vector} localTile
+     * @returns {Vector}
+     */
+    localTileToWorld(localTile) {
+        const result = localTile.rotateFastMultipleOf90(this.rotation);
+        result.x += this.origin.x;
+        result.y += this.origin.y;
+        return result;
     }
 }

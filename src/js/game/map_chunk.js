@@ -151,6 +151,10 @@ export class MapChunk extends BasicSerializableObject {
             let entity = this.containedEntities[i];
             this.root.logic.tryDeleteEntity(entity);
         }
+        for (let i = 0; i < this.dynamicContents.length; i++) {
+            let entity = this.dynamicContents[i];
+            this.root.logic.tryDeleteEntity(entity);
+        }
     }
 
     isStart() {

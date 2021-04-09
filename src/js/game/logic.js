@@ -209,9 +209,6 @@ export class GameLogic {
      * @param {Entity} entity
      */
     tryDeleteEntity(entity) {
-        if (!this.canDeleteEntity(entity)) {
-            return false;
-        }
         this.root.map.removeEntity(entity);
         this.root.entityMgr.destroyEntity(entity);
         this.root.entityMgr.processDestroyList();

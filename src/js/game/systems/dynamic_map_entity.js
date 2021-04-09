@@ -27,8 +27,6 @@ export class DynamicMapEntitySystem extends GameSystemWithFilter {
                 let oldTile = dynamicMapEntityComp.origin;
                 let newTile = newPosition;
 
-                console.log(dynamicMapEntityComp.origin);
-
                 //update position
                 dynamicMapEntityComp.origin = newPosition;
 
@@ -57,6 +55,16 @@ export class DynamicMapEntitySystem extends GameSystemWithFilter {
             const sprite = dynamicComp.getSprite();
             if (sprite) {
                 dynamicComp.drawSprite(parameters, sprite, 2);
+            }
+            const item = dynamicComp.carrying;
+            if (item) {
+                let pos = dynamicComp.origin.toWorldSpace();
+                item.drawItemCenteredClipped(
+                    pos.x + 0.5,
+                    pos.y + 0.5,
+                    parameters,
+                    globalConfig.defaultItemDiameter
+                );
             }
         }
     }

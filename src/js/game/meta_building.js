@@ -223,7 +223,6 @@ export class MetaBuilding {
         entity.addComponent(
             new DynamicMapEntityComponent({
                 origin: new Vector(origin.x, origin.y),
-                tileSize: this.getDimensions(variant).copy(),
                 speed,
                 destination,
                 rotation,

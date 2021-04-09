@@ -53,7 +53,8 @@ export class HUDMinerHighlight extends BaseHUDPart {
 
         parameters.context.fillStyle = THEME.map.connectedMiners.overlay;
 
-        const connectedEntities = this.findConnectedMiners(contents);
+        //const connectedEntities = this.findConnectedMiners(contents);
+        const connectedEntities = [];
 
         for (let i = 0; i < connectedEntities.length; ++i) {
             const entity = connectedEntities[i];

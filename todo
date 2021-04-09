@@ -3,6 +3,7 @@ translation file is created in code...
 where does data come from?
 base-en.yaml
 
+
 resource map:
 	**NOTE: resource list hardcoded multiple places**
 	**NOTE not saving?**
@@ -39,15 +40,13 @@ collect resources from mine
 		maybe reuse the tutorial window that already exists in lower left
 	
 	make mine building
-	should eventually be one per resource type
-	so placement will have to check for proper resource
-	some way of associating building and resource type
-	can be by miner checking meta_resource id/variant
-	each variant gets its own id
+	
 	
 add workers
 	easiest movement is straight-line moving back and forth
 	harder is pathfinding
+	
+	needs 
 	
 	needs DynamicMapEntityComponent
 		fields: speed, destination, origin

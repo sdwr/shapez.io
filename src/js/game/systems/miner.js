@@ -9,6 +9,9 @@ import { GameSystemWithFilter } from "../game_system_with_filter";
 import { MapChunkView } from "../map_chunk_view";
 import { gMetaBuildingRegistry } from "../../core/global_registries";
 import { MetaWorker } from "../buildings/units/worker";
+import { getBuildingDataFromCode } from "../building_codes";
+import { ResourceItem } from "../items/resource_item";
+import { enumUnitStates } from "../components/dynamic_map_entity";
 
 export class MinerSystem extends GameSystemWithFilter {
     constructor(root) {
@@ -102,30 +105,25 @@ export class MinerSystem extends GameSystemWithFilter {
 
             // Reset everything on recompute
             if (this.needsRecompute) {
-                minerComp.cachedChainedMiner = null;
+                //minerComp.cachedChainedMiner = null;
             }
 
             // Check if miner is above an actual tile
             if (!minerComp.cachedMinedItem) {
                 const staticComp = entity.components.StaticMapEntity;
-                const tileBelow = this.root.map.getLowerLayerContentXY(
+                const tileBelow = this.root.map.getLayerContentXY(
                     staticComp.origin.x,
-                    staticComp.origin.y
+                    staticComp.origin.y,
+                    "resource"
                 );
                 if (!tileBelow) {
                     continue;
                 }
-                minerComp.cachedMinedItem = tileBelow;
-            }
+                let resourceCode = tileBelow.components.StaticMapEntity.code;
+                let data = getBuildingDataFromCode(resourceCode);
+                let item = new ResourceItem(data.variant);
 
-            //ADDING HERE
-
-            // First, try to get rid of chained items
-            if (minerComp.itemChainBuffer.length > 0) {
-                if (this.tryPerformMinerEject(entity, minerComp.itemChainBuffer[0])) {
-                    minerComp.itemChainBuffer.shift();
-                    continue;
-                }
+                minerComp.cachedMinedItem = item;
             }
 
             const mineDuration = 1 / miningSpeed;
@@ -189,34 +187,18 @@ export class MinerSystem extends GameSystemWithFilter {
      */
     tryPerformMinerEject(entity, item) {
         const minerComp = entity.components.Miner;
-        const ejectComp = entity.components.ItemEjector;
+        const staticComp = entity.components.StaticMapEntity;
 
-        // Check if we are a chained miner
-        if (minerComp.chainable) {
-            const targetEntity = minerComp.cachedChainedMiner;
-
-            // Check if the cache has to get recomputed
-            if (targetEntity === null) {
-                minerComp.cachedChainedMiner = this.findChainedMiner(entity);
-            }
-
-            // Check if we now have a target
-            if (targetEntity) {
-                const targetMinerComp = targetEntity.components.Miner;
-                if (targetMinerComp.tryAcceptChainedItem(item)) {
-                    return true;
-                } else {
-                    return false;
-                }
+        const chunk = this.root.map.getOrCreateChunkAtTile(staticComp.origin.x, staticComp.origin.y);
+        for (let i = 0; i < chunk.dynamicContents.length; i++) {
+            let unit = chunk.dynamicContents[i];
+            let unitDynamic = unit.components.DynamicMapEntity;
+            if (unitDynamic.state == enumUnitStates.idle) {
+                unitDynamic.carrying = item;
+                unitDynamic.updateDestination(new Vector(0, 0));
+                return true;
             }
         }
-
-        // Seems we are a regular miner or at the end of a row, try actually ejecting
-        if (ejectComp.tryEject(0, item)) {
-            return true;
-        }
-
-        return false;
     }
 
     /**
