@@ -11,9 +11,12 @@ export class BaseMap extends BasicSerializableObject {
         return "Map";
     }
 
+    //goldLeft + tilesLeft refers to 1-deep ring around base
     static getSchema() {
         return {
             seed: types.uint,
+            goldLeft: types.uint,
+            tilesLeft: types.uint,
         };
     }
 
@@ -26,6 +29,8 @@ export class BaseMap extends BasicSerializableObject {
         this.root = root;
 
         this.seed = 0;
+        this.goldLeft = 2;
+        this.tilesLeft = 8;
 
         /**
          * Mapping of 'X|Y' to chunk

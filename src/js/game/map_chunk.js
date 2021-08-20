@@ -374,7 +374,26 @@ export class MapChunk extends BasicSerializableObject {
         if (this.x == 0 && this.y == 0) {
             return;
         }
+
         const rng = new RandomNumberGenerator(" " + performance.now() + this.root.map.seed);
+        //spawn guaranteed gold in the first ring around the base
+        if (Math.abs(this.x) < 2 && Math.abs(this.y) < 2) {
+            let spawnChance = (this.root.map.goldLeft + 0.0) / this.root.map.tilesLeft;
+            if (rng.next() < spawnChance) {
+                this.spawnResource(rng, enumResourceVariants.gold);
+                this.root.map.goldLeft--;
+            }
+            this.root.map.tilesLeft--;
+        } else {
+            const resourcePatchChance = 0.9;
+
+            if (rng.next() < resourcePatchChance) {
+                let resourceVariants = Object.keys(enumResourceVariants);
+                let variant = resourceVariants[rng.nextIntRange(0, resourceVariants.length)];
+
+                this.spawnResource(rng, variant);
+            }
+        }
 
         // if (this.generatePredefined(rng)) {
         //     return;
@@ -399,32 +418,26 @@ export class MapChunk extends BasicSerializableObject {
         //     const shapePatchSize = Math.max(2, Math.round(1 + clamp(distanceToOriginInChunks / 8, 0, 4)));
         //     this.internalGenerateShapePatch(rng, shapePatchSize, distanceToOriginInChunks);
         // }
+    }
 
-        const resourcePatchChance = 0.9;
+    spawnResource(rng, variant) {
+        const border = 2;
 
-        if (rng.next() < resourcePatchChance) {
-            const border = 2;
+        // Find a position within the chunk which is not blocked
+        let patchX = rng.nextIntRange(border, globalConfig.mapChunkSize - border - 1);
+        let patchY = rng.nextIntRange(border, globalConfig.mapChunkSize - border - 1);
 
-            // Find a position within the chunk which is not blocked
-            let patchX = rng.nextIntRange(border, globalConfig.mapChunkSize - border - 1);
-            let patchY = rng.nextIntRange(border, globalConfig.mapChunkSize - border - 1);
+        const resource = gMetaBuildingRegistry.findByClass(MetaResourcesBuilding).createStaticEntity({
+            root: this.root,
+            origin: new Vector(patchX + this.tileX, patchY + this.tileY),
+            rotation: 0,
+            originalRotation: 0,
+            rotationVariant: 0,
+            variant: variant,
+        });
 
-            //make new resource at location
-            let resourceVariants = Object.keys(enumResourceVariants);
-            let variant = resourceVariants[rng.nextIntRange(0, resourceVariants.length)];
-
-            const resource = gMetaBuildingRegistry.findByClass(MetaResourcesBuilding).createStaticEntity({
-                root: this.root,
-                origin: new Vector(patchX + this.tileX, patchY + this.tileY),
-                rotation: 0,
-                originalRotation: 0,
-                rotationVariant: 0,
-                variant: variant,
-            });
-
-            this.root.map.placeEntity(resource);
-            this.root.entityMgr.registerEntity(resource);
-        }
+        this.root.map.placeEntity(resource);
+        this.root.entityMgr.registerEntity(resource);
     }
 
     /**
