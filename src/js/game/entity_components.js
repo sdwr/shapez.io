@@ -21,6 +21,7 @@ import { FilterComponent } from "./components/filter";
 import { ItemProducerComponent } from "./components/item_producer";
 import { DynamicMapEntityComponent } from "./components/dynamic_map_entity";
 import { ResourceComponent } from "./components/resource";
+import { PlayerComponent } from "./components/player";
 /* typehints:end */
 
 /**
@@ -45,6 +46,9 @@ export class EntityComponentStorage {
 
         /** @type {MinerComponent} */
         this.Miner;
+
+        /** @type {PlayerComponent} */
+        this.Player;
 
         /** @type {ItemProcessorComponent} */
         this.ItemProcessor;

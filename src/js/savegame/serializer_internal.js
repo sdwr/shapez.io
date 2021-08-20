@@ -113,6 +113,7 @@ export class SerializerInternal {
         });
 
         entity.uid = payload.uid;
+        entity.children = payload.children;
 
         this.deserializeComponents(root, entity, payload.components);
 
@@ -121,7 +122,6 @@ export class SerializerInternal {
     }
 
     deserializeDynamicEntity(root, payload) {
-        console.log(payload);
         const dynamicData = payload.components.DynamicMapEntity;
         assert(dynamicData, "entity has no dynamic data");
 
@@ -135,7 +135,8 @@ export class SerializerInternal {
             origin: Vector.fromSerializedObject(dynamicData.origin),
             speed: dynamicData.speed,
             destination: Vector.fromSerializedObject(dynamicData.destination),
-            target: dynamicData.target,
+            state: dynamicData.state,
+            carrying: dynamicData.carrying,
             rotation: dynamicData.rotation,
             rotationVariant: data.rotationVariant,
             variant: data.variant,

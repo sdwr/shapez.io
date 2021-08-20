@@ -64,7 +64,6 @@ export class Resources extends BasicSerializableObject {
     gainItem(item) {
         if (item.getItemType() == "resource") {
             this.gainResource(item.type, item.amount);
-            console.log(this.resourceMap);
         }
     }
 

@@ -32,6 +32,7 @@ import { KEYMAPPINGS } from "./key_action_mapper";
 import { defaultBuildingVariant } from "./meta_building";
 import { enumResourceVariants, MetaResourcesBuilding } from "./buildings/meta_resources";
 import { MetaWorker } from "./buildings/units/worker";
+import { MetaPlayer } from "./buildings/units/player";
 
 const logger = createLogger("building_registry");
 
@@ -63,9 +64,11 @@ export function initMetaBuildingRegistry() {
     gMetaBuildingRegistry.register(MetaItemProducerBuilding);
     gMetaBuildingRegistry.register(MetaResourcesBuilding);
     gMetaBuildingRegistry.register(MetaWorker);
+    gMetaBuildingRegistry.register(MetaPlayer);
 
     // Units
     registerBuildingVariant(66, MetaWorker, defaultBuildingVariant);
+    registerBuildingVariant(67, MetaPlayer, defaultBuildingVariant);
 
     // Resources
     registerBuildingVariant(62, MetaResourcesBuilding, defaultBuildingVariant);

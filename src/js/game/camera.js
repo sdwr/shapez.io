@@ -344,10 +344,10 @@ export class Camera extends BasicSerializableObject {
      */
     bindKeys() {
         const mapper = this.root.keyMapper;
-        mapper.getBinding(KEYMAPPINGS.navigation.mapMoveUp).add(() => (this.keyboardForce.y = -1));
-        mapper.getBinding(KEYMAPPINGS.navigation.mapMoveDown).add(() => (this.keyboardForce.y = 1));
-        mapper.getBinding(KEYMAPPINGS.navigation.mapMoveRight).add(() => (this.keyboardForce.x = 1));
-        mapper.getBinding(KEYMAPPINGS.navigation.mapMoveLeft).add(() => (this.keyboardForce.x = -1));
+        // mapper.getBinding(KEYMAPPINGS.navigation.mapMoveUp).add(() => (this.keyboardForce.y = -1));
+        // mapper.getBinding(KEYMAPPINGS.navigation.mapMoveDown).add(() => (this.keyboardForce.y = 1));
+        // mapper.getBinding(KEYMAPPINGS.navigation.mapMoveRight).add(() => (this.keyboardForce.x = 1));
+        // mapper.getBinding(KEYMAPPINGS.navigation.mapMoveLeft).add(() => (this.keyboardForce.x = -1));
 
         mapper
             .getBinding(KEYMAPPINGS.navigation.mapZoomIn)
@@ -773,12 +773,12 @@ export class Camera extends BasicSerializableObject {
             now += physicsStepSizeMs;
             this.cameraUpdateTimeBucket -= physicsStepSizeMs;
 
-            this.internalUpdatePanning(now, physicsStepSizeMs);
-            this.internalUpdateMousePanning(now, physicsStepSizeMs);
+            //this.internalUpdatePanning(now, physicsStepSizeMs);
+            //this.internalUpdateMousePanning(now, physicsStepSizeMs);
             this.internalUpdateZooming(now, physicsStepSizeMs);
             this.internalUpdateCentering(now, physicsStepSizeMs);
-            this.internalUpdateShake(now, physicsStepSizeMs);
-            this.internalUpdateKeyboardForce(now, physicsStepSizeMs);
+            //this.internalUpdateShake(now, physicsStepSizeMs);
+            //this.internalUpdateKeyboardForce(now, physicsStepSizeMs);
         }
         this.clampZoomLevel();
     }
@@ -959,7 +959,7 @@ export class Camera extends BasicSerializableObject {
         if (!this.currentlyMoving && this.desiredCenter !== null) {
             const diff = this.center.direction(this.desiredCenter);
             const length = diff.length();
-            const tolerance = 1 / this.zoomLevel;
+            const tolerance = 0;
             if (length > tolerance) {
                 const movement = diff.multiplyScalar(Math.min(1, dt * 0.008));
                 this.center.x += movement.x;

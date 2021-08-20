@@ -217,16 +217,28 @@ export class MetaBuilding {
         return entity;
     }
 
-    createDynamicEntity({ root, origin, speed, destination, rotation, rotationVariant, variant }) {
+    createDynamicEntity({
+        root,
+        origin,
+        speed,
+        destination,
+        rotation,
+        state,
+        carrying,
+        rotationVariant,
+        variant,
+    }) {
         const entity = new Entity(root);
         entity.layer = this.getLayer();
         entity.addComponent(
             new DynamicMapEntityComponent({
-                origin: new Vector(origin.x, origin.y),
+                origin: origin.copy(),
                 speed,
-                destination,
+                destination: destination.copy(),
                 rotation,
+                state,
                 code: getCodeFromBuildingData(this, variant, rotationVariant),
+                carrying,
             })
         );
         this.setupEntityComponents(entity, root);

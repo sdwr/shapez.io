@@ -21,6 +21,7 @@ import { FilterComponent } from "./components/filter";
 import { ItemProducerComponent } from "./components/item_producer";
 import { DynamicMapEntityComponent } from "./components/dynamic_map_entity";
 import { ResourceComponent } from "./components/resource";
+import { PlayerComponent } from "./components/player";
 
 export function initComponentRegistry() {
     gComponentRegistry.register(StaticMapEntityComponent);
@@ -45,6 +46,7 @@ export function initComponentRegistry() {
     gComponentRegistry.register(ItemProducerComponent);
     gComponentRegistry.register(ResourceComponent);
     gComponentRegistry.register(DynamicMapEntityComponent);
+    gComponentRegistry.register(PlayerComponent);
 
     // IMPORTANT ^^^^^ UPDATE ENTITY COMPONENT STORAGE AFTERWARDS
 

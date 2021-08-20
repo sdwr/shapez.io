@@ -24,7 +24,7 @@ export class MetaCutterBuilding extends MetaBuilding {
     getDimensions(variant) {
         switch (variant) {
             case defaultBuildingVariant:
-                return new Vector(2, 1);
+                return new Vector(1, 1);
             case enumCutterVariants.quad:
                 return new Vector(4, 1);
             default:
@@ -60,7 +60,7 @@ export class MetaCutterBuilding extends MetaBuilding {
      * @param {GameRoot} root
      */
     getIsUnlocked(root) {
-        return root.hubGoals.isRewardUnlocked(enumHubGoalRewards.reward_cutter_and_trash);
+        return true;
     }
 
     /**

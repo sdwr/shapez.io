@@ -12,7 +12,6 @@ import { MetaWorker } from "../buildings/units/worker";
 import { getBuildingDataFromCode } from "../building_codes";
 import { ResourceItem } from "../items/resource_item";
 import { enumUnitStates } from "../components/dynamic_map_entity";
-import { types } from "../../savegame/serialization";
 
 export class MinerSystem extends GameSystemWithFilter {
     constructor(root) {
@@ -31,40 +30,28 @@ export class MinerSystem extends GameSystemWithFilter {
      * Called whenever an entity got added
      * @param {Entity} entity
      */
-    onEntityAdded(entity) {
-        const minerComp = entity.components.Miner;
-        if (minerComp) {
-            this.spawnWorkers(entity);
-        }
-    }
+    onEntityAdded(entity) {}
 
     /**
      * Try to spawn workers for mine
      * @param {Entity} entity
      */
-    spawnWorkers(entity) {
+    spawnWorker(entity) {
         const minerComp = entity.components.Miner;
         const target = entity.uid;
-        for (let i = 0; i < 4; i++) {
-            let worker = this.spawnUnitAt(
-                gMetaBuildingRegistry.findByClass(MetaWorker),
-                new Vector(4, 4),
-                target
-            );
-            entity.children.push(worker.uid);
-            this.root.systemMgr.systems.dynamicMapEntities.setDestination(
-                worker,
-                entity.components.StaticMapEntity.origin
-            );
-        }
+        let worker = this.spawnUnitAt(gMetaBuildingRegistry.findByClass(MetaWorker), new Vector(4, 4));
+        entity.children.push(worker.uid);
+        this.root.systemMgr.systems.dynamicMapEntities.setDestination(
+            worker,
+            entity.components.StaticMapEntity.origin
+        );
     }
 
-    spawnUnitAt(metaBuilding, tile, target) {
+    spawnUnitAt(metaBuilding, tile) {
         const entity = this.root.logic.trySpawnUnit({
             origin: tile,
             speed: 1,
             destination: tile,
-            target: target,
             rotation: 0,
             rotationVariant: 0,
             variant: "default",
@@ -152,6 +139,9 @@ export class MinerSystem extends GameSystemWithFilter {
             }
 
             //update children worker destinations
+            if (entity.children.length < 2) {
+                this.spawnWorker(entity);
+            }
             for (let i = 0; i < entity.children.length; i++) {
                 let childId = entity.children[i];
                 let child = this.root.entityMgr.findByUid(childId);

@@ -34,11 +34,18 @@ export const KEYMAPPINGS = {
         switchLayers: { keyCode: key("E") },
     },
 
+    player: {
+        moveUp: { keyCode: key("W") },
+        moveRight: { keyCode: key("D") },
+        moveDown: { keyCode: key("S") },
+        moveLeft: { keyCode: key("A") },
+    },
+
     navigation: {
-        mapMoveUp: { keyCode: key("W") },
-        mapMoveRight: { keyCode: key("D") },
-        mapMoveDown: { keyCode: key("S") },
-        mapMoveLeft: { keyCode: key("A") },
+        //mapMoveUp: { keyCode: key("W") },
+        // mapMoveRight: { keyCode: key("D") },
+        // mapMoveDown: { keyCode: key("S") },
+        // mapMoveLeft: { keyCode: key("A") },
         mapMoveFaster: { keyCode: 16 }, //shift
 
         centerMap: { keyCode: 32 }, // SPACE

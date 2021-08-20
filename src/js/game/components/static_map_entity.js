@@ -106,7 +106,7 @@ export class StaticMapEntityComponent extends Component {
             "Rotation of static map entity must be multiple of 90 (was " + rotation + ")"
         );
 
-        this.origin = origin;
+        this.origin = origin.copy();
         this.rotation = rotation;
         this.code = code;
         this.originalRotation = originalRotation;

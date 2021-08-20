@@ -6,6 +6,7 @@ import { getBuildingDataFromCode } from "../building_codes";
 import { AtlasSprite } from "../../core/sprites";
 import { BaseItem } from "../base_item";
 import { typeItemSingleton } from "../item_resolver";
+import { DrawParameters } from "../../core/draw_parameters";
 
 /**
  * @enum {string}
@@ -24,7 +25,7 @@ export class DynamicMapEntityComponent extends Component {
     static getSchema() {
         // cachedMinedItem is not serialized.
         return {
-            origin: types.tileVector,
+            origin: types.vector,
             speed: types.uint,
             destination: types.vector,
             rotation: types.float,
@@ -100,13 +101,13 @@ export class DynamicMapEntityComponent extends Component {
         destination = new Vector(),
         rotation = 0,
         state = enumUnitStates.idle,
-        carrying = null,
         code = 0,
+        carrying = null,
     }) {
         super();
-        this.origin = origin;
+        this.origin = origin.copy();
         this.speed = speed;
-        this.destination = destination;
+        this.destination = destination.copy();
         this.rotation = rotation;
         this.code = code;
         this.carrying = carrying;
@@ -151,11 +152,17 @@ export class DynamicMapEntityComponent extends Component {
      * @param {Vector=} destination
      */
     setDestination(destination) {
-        this.destination = destination;
-        this.rotation = Math.round(Math.degrees(destination.sub(this.origin).angle()));
-        this.state = enumUnitStates.moving;
+        this.destination = destination.copy();
+        if (!this.destination.equals(this.origin)) {
+            this.rotation = Math.round(Math.degrees(destination.sub(this.origin).angle()));
+            this.state = enumUnitStates.moving;
+        }
     }
 
+    /**
+     * @param {DrawParameters} parameters
+     * @param {AtlasSprite} sprite
+     */
     drawSprite(parameters, sprite, extrudePixels = 0) {
         const size = this.getTileSize();
         let worldX = this.origin.x * globalConfig.tileSize;

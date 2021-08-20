@@ -97,20 +97,20 @@ export class GameLogic {
      * @param {Vector} param0.origin
      * @param {number} param0.speed
      * @param {Vector} param0.destination
-     * @param {number} param0.target
      * @param {number} param0.rotation
      * @param {number} param0.rotationVariant
      * @param {string} param0.variant
      * @param {MetaBuilding} param0.building
      */
 
-    trySpawnUnit({ origin, speed, destination, target, rotation, rotationVariant, variant, building }) {
+    trySpawnUnit({ origin, speed, destination, rotation, rotationVariant, variant, building }) {
         const entity = building.createDynamicEntity({
             root: this.root,
-            origin,
+            origin: origin.copy(),
             speed,
-            destination,
-            target,
+            destination: destination.copy(),
+            state: null,
+            carrying: null,
             rotation,
             rotationVariant,
             variant,

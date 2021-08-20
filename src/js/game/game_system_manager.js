@@ -26,6 +26,7 @@ import { FilterSystem } from "./systems/filter";
 import { ItemProducerSystem } from "./systems/item_producer";
 import { ResourceSystem } from "./systems/resources";
 import { DynamicMapEntitySystem } from "./systems/dynamic_map_entity";
+import { PlayerSystem } from "./systems/player";
 
 const logger = createLogger("game_system_manager");
 
@@ -108,6 +109,9 @@ export class GameSystemManager {
             /** @type {ItemProducerSystem} */
             itemProducer: null,
 
+            /** @type {PlayerSystem} */
+            playerSystem: null,
+
             /* typehints:end */
         };
         this.systemUpdateOrder = [];
@@ -161,6 +165,8 @@ export class GameSystemManager {
         add("beltUnderlays", BeltUnderlaysSystem);
 
         add("constantSignal", ConstantSignalSystem);
+
+        add("playerSystem", PlayerSystem);
 
         // WIRES section
         add("lever", LeverSystem);
