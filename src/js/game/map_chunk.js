@@ -147,13 +147,19 @@ export class MapChunk extends BasicSerializableObject {
     clearChunk() {
         this.patches = [];
         this.lowerLayer = make2DUndefinedArray(globalConfig.mapChunkSize, globalConfig.mapChunkSize);
-        for (let i = 0; i < this.containedEntities.length; i++) {
-            let entity = this.containedEntities[i];
-            this.root.logic.tryDeleteEntity(entity);
+        let containedEntitiesCopy = this.containedEntities.slice(0);
+        for (let i = 0; i < containedEntitiesCopy.length; i++) {
+            let entity = containedEntitiesCopy[i];
+            if (entity) {
+                this.root.logic.tryDeleteEntity(entity);
+            }
         }
-        for (let i = 0; i < this.dynamicContents.length; i++) {
-            let entity = this.dynamicContents[i];
-            this.root.logic.tryDeleteEntity(entity);
+        let dynamicContentsCopy = this.dynamicContents.slice(0);
+        for (let i = 0; i < dynamicContentsCopy.length; i++) {
+            let entity = dynamicContentsCopy[i];
+            if (entity) {
+                this.root.logic.tryDeleteEntity(entity);
+            }
         }
     }
 
@@ -588,7 +594,6 @@ export class MapChunk extends BasicSerializableObject {
             fastArrayDeleteValueIfContained(this.containedEntities, oldContents);
             fastArrayDeleteValueIfContained(this.containedEntitiesByLayer[layer], oldContents);
         }
-
         if (layer === "regular") {
             this.contents[localX][localY] = contents;
         } else if (layer === "wires") {

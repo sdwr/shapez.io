@@ -14,6 +14,7 @@ export class ResourceItem extends BaseItem {
     static getSchema() {
         return {
             type: types.enum(enumResources),
+            amount: types.int,
         };
     }
 
@@ -33,9 +34,10 @@ export class ResourceItem extends BaseItem {
     /**
      * @param {enumResources} type
      */
-    constructor(type) {
+    constructor(type, amount = 0) {
         super();
         this.type = type;
+        this.amount = amount;
     }
 
     /**

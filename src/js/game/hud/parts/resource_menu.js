@@ -1,5 +1,6 @@
 import { BaseHUDPart } from "../base_hud_part";
 import { makeDiv } from "../../../core/utils";
+import { enumResources } from "../../resource_types";
 
 export class HUDResourceMenu extends BaseHUDPart {
     constructor(root) {
@@ -17,7 +18,7 @@ export class HUDResourceMenu extends BaseHUDPart {
          * }>}
          */
         this.handles = [];
-        this.resourceKeys = ["STONE", "WOOD", "GOLD"];
+        this.resourceKeys = Object.keys(enumResources);
     }
     createElements(parent) {
         this.element = makeDiv(parent, "ingame_HUD_ResourceMenu", []);

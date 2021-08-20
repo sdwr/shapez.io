@@ -31,6 +31,11 @@ export class Entity extends BasicSerializableObject {
         this.components = new EntityComponentStorage();
 
         /**
+         * The uids of children entities
+         */
+        this.children = [];
+
+        /**
          * Whether this entity was registered on the @see EntityManager so far
          */
         this.registered = false;
@@ -79,6 +84,7 @@ export class Entity extends BasicSerializableObject {
         return {
             uid: types.uint,
             components: types.keyValueMap(types.objData(gComponentRegistry), false),
+            children: types.array(types.uint),
         };
     }
 

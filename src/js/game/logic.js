@@ -211,7 +211,15 @@ export class GameLogic {
      * @param {Entity} entity
      */
     tryDeleteEntity(entity) {
+        if (!entity) {
+            console.error("entity does not exist");
+            return false;
+        }
         this.root.map.removeEntity(entity);
+        entity.children.forEach(uid => {
+            let child = this.root.entityMgr.findByUid(uid, false);
+            this.root.logic.tryDeleteEntity(child);
+        });
         this.root.entityMgr.destroyEntity(entity);
         this.root.entityMgr.processDestroyList();
         return true;

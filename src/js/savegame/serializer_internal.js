@@ -121,6 +121,7 @@ export class SerializerInternal {
     }
 
     deserializeDynamicEntity(root, payload) {
+        console.log(payload);
         const dynamicData = payload.components.DynamicMapEntity;
         assert(dynamicData, "entity has no dynamic data");
 

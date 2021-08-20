@@ -18,7 +18,8 @@
  *   waypoints: any,
  *   entities: Array<Entity>,
  *   chunks: Array<MapChunk>,
- *   beltPaths: Array<any>
+ *   beltPaths: Array<any>,
+ *   resources: any,
  * }} SerializedGame
  *
  * @typedef {{

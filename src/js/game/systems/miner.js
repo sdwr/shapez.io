@@ -12,6 +12,7 @@ import { MetaWorker } from "../buildings/units/worker";
 import { getBuildingDataFromCode } from "../building_codes";
 import { ResourceItem } from "../items/resource_item";
 import { enumUnitStates } from "../components/dynamic_map_entity";
+import { types } from "../../savegame/serialization";
 
 export class MinerSystem extends GameSystemWithFilter {
     constructor(root) {
@@ -50,6 +51,7 @@ export class MinerSystem extends GameSystemWithFilter {
                 new Vector(4, 4),
                 target
             );
+            entity.children.push(worker.uid);
             this.root.systemMgr.systems.dynamicMapEntities.setDestination(
                 worker,
                 entity.components.StaticMapEntity.origin
@@ -130,7 +132,7 @@ export class MinerSystem extends GameSystemWithFilter {
                 }
                 let resourceCode = tileBelow.components.StaticMapEntity.code;
                 let data = getBuildingDataFromCode(resourceCode);
-                let item = new ResourceItem(data.variant);
+                let item = new ResourceItem(data.variant, 10);
 
                 minerComp.cachedMinedItem = item;
             }
@@ -146,6 +148,24 @@ export class MinerSystem extends GameSystemWithFilter {
                     this.root.signals.itemProduced.dispatch(minerComp.cachedMinedItem);
                     // Store mining time
                     minerComp.lastMiningTime = this.root.time.now() - buffer;
+                }
+            }
+
+            //update children worker destinations
+            for (let i = 0; i < entity.children.length; i++) {
+                let childId = entity.children[i];
+                let child = this.root.entityMgr.findByUid(childId);
+                if (child && child.components.DynamicMapEntity.state == enumUnitStates.idle) {
+                    if (child.components.DynamicMapEntity.origin.equals(new Vector(4, 4))) {
+                        //deliver item
+                        let item = child.components.DynamicMapEntity.carrying;
+                        this.root.resources.gainItem(item);
+                        child.components.DynamicMapEntity.carrying = null;
+                        //return to miner
+                        child.components.DynamicMapEntity.setDestination(
+                            entity.components.StaticMapEntity.origin
+                        );
+                    }
                 }
             }
         }

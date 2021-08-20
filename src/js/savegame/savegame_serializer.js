@@ -40,6 +40,7 @@ export class SavegameSerializer {
             waypoints: root.hud.parts.waypoints.serialize(),
             entities: this.internal.serializeEntityArray(root.entityMgr.entities),
             beltPaths: root.systemMgr.systems.belt.serializePaths(),
+            resources: root.resources.serialize(),
         };
 
         if (G_IS_DEV) {
@@ -137,6 +138,7 @@ export class SavegameSerializer {
         errorReason = errorReason || root.hud.parts.waypoints.deserialize(savegame.waypoints);
         errorReason = errorReason || this.internal.deserializeEntityArray(root, savegame.entities);
         errorReason = errorReason || root.systemMgr.systems.belt.deserializePaths(savegame.beltPaths);
+        errorReason = errorReason || root.resources.deserialize(savegame.resources, root);
 
         // Check for errors
         if (errorReason) {
