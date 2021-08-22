@@ -9,6 +9,10 @@ export class MetaUnit extends MetaBuilding {
         super(id);
     }
 
+    getSpeed() {
+        return 1;
+    }
+
     /**
      * Returns the edit layer of the building
      * @returns {Layer}

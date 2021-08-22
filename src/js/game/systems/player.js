@@ -41,33 +41,34 @@ export class PlayerSystem extends GameSystemWithFilter {
 
     update() {
         if (this.allEntities.length == 0) {
-            this.spawnPlayer();
+            this.player = this.spawnPlayer();
+            this.root.playerEntity = this.player;
         } else {
-            let player = this.allEntities[0];
-            this.root.camera.setDesiredCenter(player.components.DynamicMapEntity.origin.toWorldSpace());
-            this.updatePlayerDestination(player);
+            this.player = this.allEntities[0];
+            this.root.playerEntity = this.player;
         }
+        this.root.camera.setDesiredCenter(this.player.components.DynamicMapEntity.origin.toWorldSpace());
+        this.updatePlayerDestination(this.player);
     }
 
     /**
      * Try to spawn player
      */
     spawnPlayer() {
-        this.spawnUnitAt(gMetaBuildingRegistry.findByClass(MetaPlayer), new Vector(2, 2));
+        return this.spawnUnitAt(gMetaBuildingRegistry.findByClass(MetaPlayer), new Vector(2, 2));
     }
 
-    spawnUnitAt(metaBuilding, tile) {
+    spawnUnitAt(metaUnit, tile) {
         const entity = this.root.logic.trySpawnUnit({
             origin: tile,
-            speed: 1,
+            speed: metaUnit.getSpeed(),
             destination: tile,
             rotation: 0,
             rotationVariant: 0,
             variant: "default",
-            building: metaBuilding,
+            building: metaUnit,
         });
 
-        entity.components.DynamicMapEntity.speed = 3;
         return entity;
     }
 

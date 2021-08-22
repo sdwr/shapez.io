@@ -1,5 +1,5 @@
-$buildings: belt, cutter, miner, mixer, painter, rotater, balancer, stacker, trash, underground_belt, wire,
-    constant_signal, logic_gate, lever, filter, wire_tunnel, display, virtual_processor, reader, storage,
+$buildings: belt, cutter, barracks, miner, mixer, painter, rotater, balancer, stacker, trash, underground_belt,
+    wire, constant_signal, logic_gate, lever, filter, wire_tunnel, display, virtual_processor, reader, storage,
     transistor, analyzer, comparator, item_producer;
 
 @each $building in $buildings {

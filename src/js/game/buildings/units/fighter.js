@@ -5,17 +5,15 @@ import { GameRoot } from "../../root";
 import { MetaUnit } from "../meta_unit";
 import { defaultBuildingVariant } from "../../meta_building";
 import { Vector } from "../../../core/vector";
-import { PlayerComponent } from "../../components/player";
 
-export class MetaPlayer extends MetaUnit {
+export class MetaFighter extends MetaUnit {
     constructor() {
-        super("player");
+        super("fighter");
     }
 
     getSpeed() {
-        return 3;
+        return 2;
     }
-
     /**
      * Returns the edit layer of the building
      * @returns {Layer}
@@ -28,7 +26,7 @@ export class MetaPlayer extends MetaUnit {
      * Should return the dimensions of the building
      */
     getDimensions(variant = defaultBuildingVariant) {
-        return new Vector(2, 2);
+        return new Vector(0.75, 0.75);
     }
 
     /**
@@ -43,9 +41,7 @@ export class MetaPlayer extends MetaUnit {
      * Creates the entity at the given location
      * @param {Entity} entity
      */
-    setupEntityComponents(entity) {
-        entity.addComponent(new PlayerComponent());
-    }
+    setupEntityComponents(entity) {}
 
     /**
      * Returns the sprite for a given variant

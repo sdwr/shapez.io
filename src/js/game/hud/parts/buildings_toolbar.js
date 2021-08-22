@@ -16,6 +16,7 @@ import { HUDBaseToolbar } from "./base_toolbar";
 import { MetaStorageBuilding } from "../../buildings/storage";
 import { MetaItemProducerBuilding } from "../../buildings/item_producer";
 import { queryParamOptions } from "../../../core/query_parameters";
+import { MetaBarracksBuilding } from "../../buildings/barracks";
 
 export class HUDBuildingsToolbar extends HUDBaseToolbar {
     constructor(root) {
@@ -25,6 +26,7 @@ export class HUDBuildingsToolbar extends HUDBaseToolbar {
                 MetaBalancerBuilding,
                 MetaUndergroundBeltBuilding,
                 MetaMinerBuilding,
+                MetaBarracksBuilding,
                 MetaCutterBuilding,
                 MetaRotaterBuilding,
                 MetaStackerBuilding,

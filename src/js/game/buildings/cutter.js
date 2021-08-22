@@ -60,7 +60,7 @@ export class MetaCutterBuilding extends MetaBuilding {
      * @param {GameRoot} root
      */
     getIsUnlocked(root) {
-        return true;
+        return false;
     }
 
     /**

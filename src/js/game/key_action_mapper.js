@@ -39,6 +39,7 @@ export const KEYMAPPINGS = {
         moveRight: { keyCode: key("D") },
         moveDown: { keyCode: key("S") },
         moveLeft: { keyCode: key("A") },
+        rally: { keyCode: 32 }, // SPACE
     },
 
     navigation: {
@@ -48,7 +49,7 @@ export const KEYMAPPINGS = {
         // mapMoveLeft: { keyCode: key("A") },
         mapMoveFaster: { keyCode: 16 }, //shift
 
-        centerMap: { keyCode: 32 }, // SPACE
+        //centerMap: { keyCode: 32 }, // SPACE
         mapZoomIn: { keyCode: 187, repeated: true }, // "+"
         mapZoomOut: { keyCode: 189, repeated: true }, // "-"
 
@@ -61,12 +62,13 @@ export const KEYMAPPINGS = {
         balancer: { keyCode: key("2") },
         underground_belt: { keyCode: key("3") },
         miner: { keyCode: key("4") },
-        cutter: { keyCode: key("5") },
+        barracks: { keyCode: key("5") },
         rotater: { keyCode: key("6") },
         stacker: { keyCode: key("7") },
         mixer: { keyCode: key("8") },
         painter: { keyCode: key("9") },
         trash: { keyCode: key("0") },
+        cutter: { keyCode: key("`") },
 
         // Sandbox
         item_producer: { keyCode: key("L") },

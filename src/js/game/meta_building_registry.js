@@ -33,6 +33,8 @@ import { defaultBuildingVariant } from "./meta_building";
 import { enumResourceVariants, MetaResourcesBuilding } from "./buildings/meta_resources";
 import { MetaWorker } from "./buildings/units/worker";
 import { MetaPlayer } from "./buildings/units/player";
+import { MetaFighter } from "./buildings/units/fighter";
+import { MetaBarracksBuilding } from "./buildings/barracks";
 
 const logger = createLogger("building_registry");
 
@@ -63,18 +65,23 @@ export function initMetaBuildingRegistry() {
     gMetaBuildingRegistry.register(MetaComparatorBuilding);
     gMetaBuildingRegistry.register(MetaItemProducerBuilding);
     gMetaBuildingRegistry.register(MetaResourcesBuilding);
+    gMetaBuildingRegistry.register(MetaBarracksBuilding);
     gMetaBuildingRegistry.register(MetaWorker);
     gMetaBuildingRegistry.register(MetaPlayer);
+    gMetaBuildingRegistry.register(MetaFighter);
 
     // Units
     registerBuildingVariant(66, MetaWorker, defaultBuildingVariant);
     registerBuildingVariant(67, MetaPlayer, defaultBuildingVariant);
+    registerBuildingVariant(68, MetaFighter, defaultBuildingVariant);
 
     // Resources
     registerBuildingVariant(62, MetaResourcesBuilding, defaultBuildingVariant);
     registerBuildingVariant(63, MetaResourcesBuilding, enumResourceVariants.wood);
     registerBuildingVariant(64, MetaResourcesBuilding, enumResourceVariants.stone);
     registerBuildingVariant(65, MetaResourcesBuilding, enumResourceVariants.gold);
+
+    registerBuildingVariant(69, MetaBarracksBuilding, defaultBuildingVariant);
 
     // Belt
     registerBuildingVariant(1, MetaBeltBuilding, defaultBuildingVariant, 0);

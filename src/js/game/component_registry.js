@@ -22,6 +22,7 @@ import { ItemProducerComponent } from "./components/item_producer";
 import { DynamicMapEntityComponent } from "./components/dynamic_map_entity";
 import { ResourceComponent } from "./components/resource";
 import { PlayerComponent } from "./components/player";
+import { BarracksComponent } from "./components/barracks";
 
 export function initComponentRegistry() {
     gComponentRegistry.register(StaticMapEntityComponent);
@@ -29,6 +30,7 @@ export function initComponentRegistry() {
     gComponentRegistry.register(ItemEjectorComponent);
     gComponentRegistry.register(ItemAcceptorComponent);
     gComponentRegistry.register(MinerComponent);
+    gComponentRegistry.register(BarracksComponent);
     gComponentRegistry.register(ItemProcessorComponent);
     gComponentRegistry.register(UndergroundBeltComponent);
     gComponentRegistry.register(HubComponent);

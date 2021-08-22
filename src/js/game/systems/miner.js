@@ -47,15 +47,15 @@ export class MinerSystem extends GameSystemWithFilter {
         );
     }
 
-    spawnUnitAt(metaBuilding, tile) {
+    spawnUnitAt(metaUnit, tile) {
         const entity = this.root.logic.trySpawnUnit({
             origin: tile,
-            speed: 1,
+            speed: metaUnit.getSpeed(),
             destination: tile,
             rotation: 0,
             rotationVariant: 0,
             variant: "default",
-            building: metaBuilding,
+            building: metaUnit,
         });
 
         return entity;
@@ -100,11 +100,6 @@ export class MinerSystem extends GameSystemWithFilter {
         for (let i = 0; i < this.allEntities.length; ++i) {
             const entity = this.allEntities[i];
             const minerComp = entity.components.Miner;
-
-            // Reset everything on recompute
-            if (this.needsRecompute) {
-                //minerComp.cachedChainedMiner = null;
-            }
 
             // Check if miner is above an actual tile
             if (!minerComp.cachedMinedItem) {
@@ -209,13 +204,19 @@ export class MinerSystem extends GameSystemWithFilter {
         const staticComp = entity.components.StaticMapEntity;
 
         const chunk = this.root.map.getOrCreateChunkAtTile(staticComp.origin.x, staticComp.origin.y);
-        for (let i = 0; i < chunk.dynamicContents.length; i++) {
-            let unit = chunk.dynamicContents[i];
-            let unitDynamic = unit.components.DynamicMapEntity;
-            if (unitDynamic.state == enumUnitStates.idle) {
-                unitDynamic.carrying = item;
-                this.root.systemMgr.systems.dynamicMapEntities.setDestination(unit, new Vector(4, 4));
-                return true;
+
+        for (let i = 0; i < entity.children.length; i++) {
+            let unit = this.root.entityMgr.findByUid(entity.children[i]);
+            if (unit) {
+                let unitDynamic = unit.components.DynamicMapEntity;
+                if (
+                    unitDynamic.state == enumUnitStates.idle &&
+                    unitDynamic.origin.isClose(staticComp.origin)
+                ) {
+                    unitDynamic.carrying = item;
+                    this.root.systemMgr.systems.dynamicMapEntities.setDestination(unit, new Vector(4, 4));
+                    return true;
+                }
             }
         }
     }

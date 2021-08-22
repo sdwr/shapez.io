@@ -547,6 +547,12 @@ buildings:
             name: Splitter (compact)
             description: Splits one conveyor belt into two.
 
+    # Barracks
+    barracks:
+        default:
+            name: &barracks Barracks
+            description: Creates units.
+
     cutter:
         default:
             name: &cutter Cutter
@@ -1113,6 +1119,7 @@ keybindings:
         balancer: *balancer
         underground_belt: *underground_belt
         miner: *miner
+        barracks: *barracks
         cutter: *cutter
         rotater: *rotater
         stacker: *stacker

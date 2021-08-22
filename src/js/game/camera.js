@@ -356,7 +356,7 @@ export class Camera extends BasicSerializableObject {
             .getBinding(KEYMAPPINGS.navigation.mapZoomOut)
             .add(() => (this.desiredZoom = this.zoomLevel / 1.2));
 
-        mapper.getBinding(KEYMAPPINGS.navigation.centerMap).add(() => this.centerOnMap());
+        //mapper.getBinding(KEYMAPPINGS.navigation.centerMap).add(() => this.centerOnMap());
     }
 
     centerOnMap() {

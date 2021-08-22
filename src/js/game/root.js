@@ -198,6 +198,9 @@ export class GameRoot {
         this.queue = {
             requireRedraw: false,
         };
+
+        /** @type {Entity} */
+        this.playerEntity = null;
     }
 
     /**

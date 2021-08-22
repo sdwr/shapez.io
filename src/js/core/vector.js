@@ -64,6 +64,16 @@ export class Vector {
     }
 
     /**
+     *
+     * @param {Vector} other
+     * @param {number} dist
+     * @returns {boolean}
+     */
+    isClose(other, dist = 0.5) {
+        return Math.abs(this.x - other.x) < dist && Math.abs(this.y - other.y) < dist;
+    }
+
+    /**
      * return a copy of the vector
      * @returns {Vector}
      */

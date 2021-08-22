@@ -16,6 +16,7 @@ export class MinerComponent extends Component {
         return {
             lastMiningTime: types.ufloat,
             itemChainBuffer: types.array(typeItemSingleton),
+            children: types.array(types.uint),
         };
     }
 
@@ -42,6 +43,8 @@ export class MinerComponent extends Component {
          * @type {Entity|null|false}
          */
         this.cachedChainedMiner = null;
+
+        this.children = [];
     }
 
     /**

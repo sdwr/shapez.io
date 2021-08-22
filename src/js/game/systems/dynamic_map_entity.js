@@ -52,17 +52,18 @@ export class DynamicMapEntitySystem extends GameSystemWithFilter {
                 let oldTile = dynamicMapEntityComp.origin;
                 let newTile = newPosition;
 
-                //update position
-                dynamicMapEntityComp.origin = newPosition;
-
                 //update chunk if necessary
                 let oldChunk = this.root.map.getOrCreateChunkAtTile(oldTile.x, oldTile.y);
                 let newChunk = this.root.map.getOrCreateChunkAtTile(newTile.x, newTile.y);
+                //update position
                 if (oldChunk.x === newChunk.x && oldChunk.y === newChunk.y) {
-                    continue;
+                    dynamicMapEntityComp.origin = newPosition;
                 } else {
-                    oldChunk.removeDynamicEntityFromChunk(sourceEntity);
-                    newChunk.addDynamicEntityToChunk(sourceEntity);
+                    if (newChunk.exists) {
+                        dynamicMapEntityComp.origin = newPosition;
+                        oldChunk.removeDynamicEntityFromChunk(sourceEntity);
+                        newChunk.addDynamicEntityToChunk(sourceEntity);
+                    }
                 }
             }
         }

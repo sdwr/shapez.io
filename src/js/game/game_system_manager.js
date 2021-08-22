@@ -27,6 +27,7 @@ import { ItemProducerSystem } from "./systems/item_producer";
 import { ResourceSystem } from "./systems/resources";
 import { DynamicMapEntitySystem } from "./systems/dynamic_map_entity";
 import { PlayerSystem } from "./systems/player";
+import { BarracksSystem } from "./systems/barracks";
 
 const logger = createLogger("game_system_manager");
 
@@ -57,6 +58,9 @@ export class GameSystemManager {
 
             /** @type {MinerSystem} */
             miner: null,
+
+            /** @type {BarracksSystem} */
+            barracks: null,
 
             /** @type {ItemProcessorSystem} */
             itemProcessor: null,
@@ -167,6 +171,8 @@ export class GameSystemManager {
         add("constantSignal", ConstantSignalSystem);
 
         add("playerSystem", PlayerSystem);
+
+        add("barracksSystem", BarracksSystem);
 
         // WIRES section
         add("lever", LeverSystem);
