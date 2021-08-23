@@ -68,7 +68,7 @@ export class GameLogic {
             for (let y = rect.y; y < rect.y + rect.h; ++y) {
                 // check if chunk tile is on exists
                 const chunk = this.root.map.getChunkAtTileOrNull(x, y);
-                if (!chunk.exists) {
+                if (!chunk || !chunk.exists) {
                     return false;
                 }
                 // Check if there is any direct collision

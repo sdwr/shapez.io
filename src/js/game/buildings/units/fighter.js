@@ -5,6 +5,7 @@ import { GameRoot } from "../../root";
 import { MetaUnit } from "../meta_unit";
 import { defaultBuildingVariant } from "../../meta_building";
 import { Vector } from "../../../core/vector";
+import { CombatComponent } from "../../components/combat";
 
 export class MetaFighter extends MetaUnit {
     constructor() {
@@ -41,7 +42,9 @@ export class MetaFighter extends MetaUnit {
      * Creates the entity at the given location
      * @param {Entity} entity
      */
-    setupEntityComponents(entity) {}
+    setupEntityComponents(entity) {
+        entity.addComponent(new CombatComponent());
+    }
 
     /**
      * Returns the sprite for a given variant

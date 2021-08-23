@@ -23,6 +23,17 @@ export class DynamicTickrate {
 
         this.averageFps = 60;
 
+        /**
+         * Stores average/max update ms for each game system
+         * @type {Array<{
+         *  key: string,
+         *  ticks: number,
+         *  average: number,
+         *  max: number
+         * }>}
+         */
+        this.systemMs = [];
+
         this.setTickRate(this.root.app.settings.getDesiredFps());
 
         if (G_IS_DEV && globalConfig.debug.renderForTrailer) {

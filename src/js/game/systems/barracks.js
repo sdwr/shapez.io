@@ -40,6 +40,7 @@ export class BarracksSystem extends GameSystemWithFilter {
             gMetaBuildingRegistry.findById(unitType),
             entity.components.StaticMapEntity.origin.add(offset)
         );
+        worker.team = entity.team;
         entity.children.push(worker.uid);
     }
 
@@ -96,14 +97,6 @@ export class BarracksSystem extends GameSystemWithFilter {
                 let child = this.root.entityMgr.findByUid(childId);
                 if (!child) {
                     entity.children.splice(i, 1);
-                } else {
-                    //rally to player if clicked
-                    if (rally.pressed) {
-                        let offset = new Vector(Math.random() * 2, Math.random() * 2);
-                        child.components.DynamicMapEntity.setDestination(
-                            this.root.playerEntity.components.DynamicMapEntity.origin.add(offset)
-                        );
-                    }
                 }
             }
         }

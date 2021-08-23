@@ -5,6 +5,7 @@ import { GameSystemWithFilter } from "../game_system_with_filter";
 import { MapChunkView } from "../map_chunk_view";
 import { Entity } from "../entity";
 import { Vector } from "../../core/vector";
+import { ResourceItem } from "../items/resource_item";
 
 export class DynamicMapEntitySystem extends GameSystemWithFilter {
     constructor(root) {
@@ -86,6 +87,16 @@ export class DynamicMapEntitySystem extends GameSystemWithFilter {
             if (item) {
                 let pos = dynamicComp.origin.addScalar(0.5).toWorldSpace();
                 item.drawItemCenteredClipped(pos.x, pos.y, parameters, globalConfig.defaultItemDiameter);
+            }
+
+            if (entity.team == 2) {
+                let pos = dynamicComp.origin.addScalar(0.5).toWorldSpace();
+                new ResourceItem("stone", 5).drawItemCenteredClipped(
+                    pos.x,
+                    pos.y,
+                    parameters,
+                    globalConfig.defaultItemDiameter
+                );
             }
         }
     }

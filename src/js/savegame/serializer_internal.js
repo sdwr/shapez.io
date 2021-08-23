@@ -114,6 +114,7 @@ export class SerializerInternal {
 
         entity.uid = payload.uid;
         entity.children = payload.children;
+        entity.team = payload.team;
 
         this.deserializeComponents(root, entity, payload.components);
 
@@ -143,6 +144,7 @@ export class SerializerInternal {
         });
 
         entity.uid = payload.uid;
+        entity.team = payload.team;
 
         this.deserializeComponents(root, entity, payload.components);
 

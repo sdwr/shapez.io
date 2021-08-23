@@ -42,6 +42,7 @@ export class PlayerSystem extends GameSystemWithFilter {
     update() {
         if (this.allEntities.length == 0) {
             this.player = this.spawnPlayer();
+            this.player.hp = 100;
             this.root.playerEntity = this.player;
         } else {
             this.player = this.allEntities[0];

@@ -13,6 +13,7 @@ import { Rectangle } from "../core/rectangle";
 import { gMetaBuildingRegistry } from "../core/global_registries";
 import { enumResourceVariants, MetaResourcesBuilding } from "./buildings/meta_resources";
 import { BasicSerializableObject, types } from "../savegame/serialization";
+import { MetaBarracksBuilding } from "./buildings/barracks";
 
 const logger = createLogger("map_chunk");
 
@@ -385,6 +386,12 @@ export class MapChunk extends BasicSerializableObject {
             }
             this.root.map.tilesLeft--;
         } else {
+            const enemyBuildingChance = 0.5;
+            if (rng.next() < enemyBuildingChance) {
+                let variant = "default";
+
+                this.spawnBuilding(rng, variant, 2);
+            }
             const resourcePatchChance = 0.9;
 
             if (rng.next() < resourcePatchChance) {
@@ -438,6 +445,25 @@ export class MapChunk extends BasicSerializableObject {
 
         this.root.map.placeEntity(resource);
         this.root.entityMgr.registerEntity(resource);
+    }
+
+    spawnBuilding(rng, variant, team) {
+        const border = 2;
+        let patchX = rng.nextIntRange(border, globalConfig.mapChunkSize - border - 1);
+        let patchY = rng.nextIntRange(border, globalConfig.mapChunkSize - border - 1);
+
+        const entity = gMetaBuildingRegistry.findByClass(MetaBarracksBuilding).createStaticEntity({
+            root: this.root,
+            origin: new Vector(patchX + this.tileX, patchY + this.tileY),
+            rotation: 0,
+            originalRotation: 0,
+            rotationVariant: 0,
+            variant: variant,
+        });
+
+        entity.team = team;
+        this.root.map.placeEntity(entity);
+        this.root.entityMgr.registerEntity(entity);
     }
 
     /**

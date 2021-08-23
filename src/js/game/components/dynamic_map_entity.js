@@ -154,9 +154,17 @@ export class DynamicMapEntityComponent extends Component {
     setDestination(destination) {
         this.destination = destination.copy();
         if (!this.destination.equals(this.origin)) {
-            this.rotation = Math.round(Math.degrees(destination.sub(this.origin).angle()));
+            this.setRotation(destination);
             this.state = enumUnitStates.moving;
         }
+    }
+
+    /**
+     *
+     * @param {Vector=} target
+     */
+    setRotation(target) {
+        this.rotation = Math.round(Math.degrees(target.sub(this.origin).angle()));
     }
 
     /**

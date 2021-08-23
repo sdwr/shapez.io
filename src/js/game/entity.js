@@ -51,6 +51,10 @@ export class Entity extends BasicSerializableObject {
          */
         this.uid = 0;
 
+        this.team = 1;
+
+        this.hp = 10;
+
         /* typehints:start */
 
         /**
@@ -83,6 +87,8 @@ export class Entity extends BasicSerializableObject {
     static getSchema() {
         return {
             uid: types.uint,
+            team: types.uint,
+            hp: types.int,
             components: types.keyValueMap(types.objData(gComponentRegistry), false),
             children: types.array(types.uint),
         };

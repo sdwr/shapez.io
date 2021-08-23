@@ -51,6 +51,7 @@ import { HUDTutorialVideoOffer } from "./parts/tutorial_video_offer";
 import { HUDConstantSignalEdit } from "./parts/constant_signal_edit";
 import { HUDResourceMenu } from "./parts/resource_menu";
 import { HUDAddChunk } from "./parts/add_chunk";
+import { HUDFPSCounter } from "./parts/fps_counter";
 export class GameHUD {
     /**
      * @param {GameRoot} root
@@ -83,6 +84,7 @@ export class GameHUD {
             unlockNotification: new HUDUnlockNotification(this.root),
             gameMenu: new HUDGameMenu(this.root),
             resourceMenu: new HUDResourceMenu(this.root),
+            fpsCounter: new HUDFPSCounter(this.root),
             massSelector: new HUDMassSelector(this.root),
             shop: new HUDShop(this.root),
             statistics: new HUDStatistics(this.root),

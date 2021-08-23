@@ -23,6 +23,7 @@ import { DynamicMapEntityComponent } from "./components/dynamic_map_entity";
 import { ResourceComponent } from "./components/resource";
 import { PlayerComponent } from "./components/player";
 import { BarracksComponent } from "./components/barracks";
+import { CombatComponent } from "./components/combat";
 /* typehints:end */
 
 /**
@@ -104,6 +105,9 @@ export class EntityComponentStorage {
 
         /** @type {DynamicMapEntityComponent} */
         this.DynamicMapEntity;
+
+        /** @type {CombatComponent} */
+        this.Combat;
 
         /* typehints:end */
     }

@@ -6,6 +6,7 @@ import { MetaUnit } from "../meta_unit";
 import { defaultBuildingVariant } from "../../meta_building";
 import { Vector } from "../../../core/vector";
 import { PlayerComponent } from "../../components/player";
+import { CombatComponent } from "../../components/combat";
 
 export class MetaPlayer extends MetaUnit {
     constructor() {
@@ -45,6 +46,7 @@ export class MetaPlayer extends MetaUnit {
      */
     setupEntityComponents(entity) {
         entity.addComponent(new PlayerComponent());
+        entity.addComponent(new CombatComponent());
     }
 
     /**

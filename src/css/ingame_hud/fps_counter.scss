@@ -1,19 +1,20 @@
-#ingame_HUD_ResourceMenu {
+#ingame_HUD_FPSCounter {
     position: absolute;
-    @include S(top, 70px);
-    @include S(right, 30px);
+    @include S(top, 10px);
+    @include S(right, 200px);
     @include PlainText;
     display: flex;
+    display: none;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
 
-    > .resource {
+    > .child {
         @include PlainText;
         @include IncreasedClickArea(0px);
         background: green;
         @include S(width, 30px);
-        @include S(height, 30px);
+        @include S(height, 10px);
 
         pointer-events: all;
         cursor: pointer;

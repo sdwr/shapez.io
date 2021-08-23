@@ -40,6 +40,7 @@ export class MinerSystem extends GameSystemWithFilter {
         const minerComp = entity.components.Miner;
         const target = entity.uid;
         let worker = this.spawnUnitAt(gMetaBuildingRegistry.findByClass(MetaWorker), new Vector(4, 4));
+        worker.team = entity.team;
         entity.children.push(worker.uid);
         this.root.systemMgr.systems.dynamicMapEntities.setDestination(
             worker,

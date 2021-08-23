@@ -23,6 +23,7 @@ import { DynamicMapEntityComponent } from "./components/dynamic_map_entity";
 import { ResourceComponent } from "./components/resource";
 import { PlayerComponent } from "./components/player";
 import { BarracksComponent } from "./components/barracks";
+import { CombatComponent } from "./components/combat";
 
 export function initComponentRegistry() {
     gComponentRegistry.register(StaticMapEntityComponent);
@@ -49,6 +50,7 @@ export function initComponentRegistry() {
     gComponentRegistry.register(ResourceComponent);
     gComponentRegistry.register(DynamicMapEntityComponent);
     gComponentRegistry.register(PlayerComponent);
+    gComponentRegistry.register(CombatComponent);
 
     // IMPORTANT ^^^^^ UPDATE ENTITY COMPONENT STORAGE AFTERWARDS
 

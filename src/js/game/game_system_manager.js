@@ -28,6 +28,7 @@ import { ResourceSystem } from "./systems/resources";
 import { DynamicMapEntitySystem } from "./systems/dynamic_map_entity";
 import { PlayerSystem } from "./systems/player";
 import { BarracksSystem } from "./systems/barracks";
+import { CombatSystem } from "./systems/combat";
 
 const logger = createLogger("game_system_manager");
 
@@ -116,6 +117,9 @@ export class GameSystemManager {
             /** @type {PlayerSystem} */
             playerSystem: null,
 
+            /** @type {CombatSystem} */
+            combatSystem: null,
+
             /* typehints:end */
         };
         this.systemUpdateOrder = [];
@@ -130,6 +134,7 @@ export class GameSystemManager {
         const add = (id, systemClass) => {
             this.systems[id] = new systemClass(this.root);
             this.systemUpdateOrder.push(id);
+            this.root.dynamicTickrate.systemMs.push({ key: id, ticks: 0, average: 0, max: 0 });
         };
 
         // Order is important!
@@ -174,6 +179,9 @@ export class GameSystemManager {
 
         add("barracksSystem", BarracksSystem);
 
+        //entities get queued for destruction here
+        add("combatSystem", CombatSystem);
+
         // WIRES section
         add("lever", LeverSystem);
 
@@ -196,9 +204,16 @@ export class GameSystemManager {
      * Updates all systems
      */
     update() {
+        this.root.dynamicTickrate.systemMs;
         for (let i = 0; i < this.systemUpdateOrder.length; ++i) {
+            let time = performance.now();
             const system = this.systems[this.systemUpdateOrder[i]];
             system.update();
+
+            time = Math.round(performance.now() - time);
+            let systemMs = this.root.dynamicTickrate.systemMs[i];
+            systemMs.average = time;
+            systemMs.max = Math.max(systemMs.max, time);
         }
     }
 
