@@ -43,7 +43,7 @@ export class CombatSystem extends GameSystemWithFilter {
                 entity.components.DynamicMapEntity.setDestination(
                     this.root.playerEntity.components.DynamicMapEntity.origin.add(offset)
                 );
-            } else {
+            } else if (!entity.components.Player) {
                 //try attack
                 this.tryAttack(entity);
             }

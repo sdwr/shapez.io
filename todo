@@ -4,11 +4,58 @@ where does data come from?
 base-en.yaml
 
 
-resource map:
+NOT DONE:
+	controls
+		keyboard controls for building (e for mine, r for combat?)
+		mouse wheel changes selected?
+
+	economy
+		buildings cost gold
+		units cost gold? leaning no
+		exploring tiles costs gold/time?
+		upgrades?
+			mine upgrade = more workers EASY
+			unit upgrade should be between levels
+
+	animations
+		projectiles
+		attack (at least show cooldown on units/buildings)
+		building
+
+	minimap
+		can reuse tutorial pane (keep for tutorial)
+
+	more unit types
+		need to generalize barracks and fighter
+			BarracksSystem
+			MetaBarracks
+			MetaFighter
+		ideas
+			footman
+			zergling
+
+			necromancer
+			blizzard
+
+
+polish:
+	sprites not centered (change origin to center? dont break map or drawSprite)
+	rallying units jitter
+		have them spread out after reaching destination, not before
+	give other team different colors
+		worst case remake sprites manually
+		ideally find css tint
+	player is drawn over/under units? make consistent
+
+
+
+DONE:
+
+resource map: DONE
 	**NOTE: resource list hardcoded multiple places**
 	**NOTE not saving?**
-	
-chunk create/delete:
+
+chunk create/delete: DONE
 	buttons are hardcoded
 	not saving
 		chunks need to be added as serializable objects
@@ -16,7 +63,7 @@ chunk create/delete:
 		how do entities get readded to chunk after load?
 			serializerInternal places all entities and creates chunks
 
-resources need to be serialized
+resources need to be serialized DONE
 option 1:
 	turn resources into entities
 	resource is a type of metaBuilding
@@ -25,110 +72,123 @@ option 1:
 		resources go in lower layer
 	to use sprite code etc, need to make 1 metabuilding per resource
 	use staticbuildingcomponent + add resource component to track amt
-	
-		
-	add code to placebuilding
+
+
+	add code to placebuilding THIS ONE
 	add code to deserialize to lower layer
 	get everythign else for free
 
 
-collect resources from mine
+collect resources from mine DONE
 	add amt to resource - 98/100 etc
-	display amt? 
+	display amt?
 		there has to be a selection pane at some point
 		lower part of the screen
 		maybe reuse the tutorial window that already exists in lower left
-	
+
 	make mine building
-	
-	
-add workers
+
+
+add workers DONE
 	easiest movement is straight-line moving back and forth
 	harder is pathfinding
-	
-	needs 
-	
+
+	needs
+
 	needs DynamicMapEntityComponent
 		fields: speed, destination, origin
 		triggers logic when hits destination (message sent to workersystem?)
-			
+
 		how will path work???
 			ignore terrain is easy
 			dont want to recompute path all the time
 				will have to cache, recompute when chunk dirty flag hit
 				have to know what chunks are on path
-		
+
 	needs MovementSystem DynamicMapEntitySystem
-	
+
 	add worker sprite
-	
-		
+
+
 		add deserialize
 			make sure deserializie adds to chunk
 		add createDynamicEntity
 		add metaunit base + extensions
 		complete dynamicEntitySystem drawChunk() by calling metaunit base per entity
-		
+
 		rename MetaBuilding + registry to MetaEntity
 		do something with defaultVariant
-			
+
 		how to create
 		meta_unit system like buildings?
-		need one place to add components from 
+		need one place to add components from
 		and load sprites/animations
 		done - updated map.placeEntity()
-		
-		
-		
+
+
+
 	needs WorkerSystem (GameSystemWithFilter)
 		updates destination/origin
-	
+
 	how to handle gathering?
-	option 1:
+	option 1: WANT THIS
 		each mine has 4 worker slots
 		one per side
 		resources are gathered at speed 4 workers can get to builindg/back
-		
+
 		tradeoff:
 		easier logic
 		doesnt need dedicated controls
 		caps workers w/o needing total cap
-		
+
 	option 2:
 		assign workers to buildings
 		cap at 5/10/w/e
 		resources gathered at mine speed
 		like sc2 mineral patches, only 1 worker inside at a time
-		
+
 		tradeoff:
 		logic still easy
 		needs +/- control and total count
-		
-	option 3:
+
+	option 3: DID THIS
 		workers auto-gather
-		
+
 		tradeoff:
 		more complicated worker logic
 		find available work
 		more handsoff
-		
-		
-		
-		
+
+
+
+
 
 
 
 
 
 what kind of game?
-strategy/idle/puzzle
 
+want tight earlygame like starcraft
+	efficiency
+	a few decisions in a few minutes
+		barracks or worker?
+		timing/order should (kind of) matter
+
+mixins:
+	reroll map tiles
+	upgrades/tech tier between levels
+	mythic+ enemy modifiers
+	level grade (goal time, bonus objectives)
+
+strategy/idle/puzzle
+------------------
 want resource constraints
-hands off strategy? 
+hands off strategy?
 	uncontrollable units
 	build tech, place auras
 	workers cost food (= energy/electricity)
-	
+
 
 map moves instead of player
 tiles can be bought/replaced
@@ -136,15 +196,44 @@ tiles can be bought/replaced
 	adds resource sink (reroll for good tiles)
 	adds agency/puzzle feel
 	adds loss (deleting tile with buildings/upgrades)
-	
+
 tile ecosystem?
 	rivers/mountains run over multiple tiles
-	replacing non-source tile 
+	replacing non-source tile
 		same result
 		or changes to other possible position (uncertainty bubble)
 	adjacent tiles affect each other
 	reroll tiles to create ideal landscape
-	
+
+requires:
+	idle mechanics
+	tuned rewards
+	interactions between buildings/tiles
+
+
+tooth and tail
+--------------
+control player unit (doesn't attack)
+build with keyboard + positioning
+move with rally
+
+player actions:
+	build/upgrade economy
+	scout
+	pick battles + micro
+
+requires:
+	units
+	combat
+	pathfinding
+	enemies
+	loot/points of interest
+	bosses
+	upgrades
+
+
+
+
 
 
 wc3:
@@ -157,7 +246,7 @@ player motivators
 		build base
 		grow army
 		get/level heros
-		
+
 	explore
 		building types
 		units
@@ -165,7 +254,7 @@ player motivators
 		enemy camps
 		items
 		map
-	
+
 	compete
 		fight opponent
 		optimize build
@@ -178,7 +267,7 @@ game loop:
 		unit
 		upgrade
 		expand
-		
+
 game view is letterbox
 top corner is resources
 bottom row is map/progress/choose unit/building/upgrade
@@ -186,21 +275,21 @@ bottom row is map/progress/choose unit/building/upgrade
 three concurrent games
 	collect/spend - top and bottom corner
 		navigate tech tree using resources
-	
+
 	"real" game - map and positioning
-	
+
 	metagame - judge army vs enemy
-	
-	
+
+
 hooks in order
 	instant:
 	can move around workers
 	workers collect money
-	
+
 	medium:
 	explore buildings/units
 	grow army
-	
+
 	game:
 	level up
 	kill enemy
@@ -208,7 +297,7 @@ hooks in order
 	meta:
 	see story
 	refine build order
-	
+
 ---
 loop hero:
 game speed:
@@ -220,7 +309,7 @@ game speed:
 	pick card every 30s
 	examine item every 30s
 	change item every 1/2m
-	
+
 player motivators
 	accumulate
 		cards
@@ -228,7 +317,7 @@ player motivators
 		level up
 		items
 		metagame resources
-	
+
 	explore
 		cards
 		enemies
@@ -238,10 +327,10 @@ player motivators
 		classes
 		buildings
 		conversations
-		
+
 	compete
 		defeat boss
-		
+
 game loop
 	fight enemies
 	play cards
@@ -254,15 +343,14 @@ meta loop
 	unlock cards
 	unlock classes
 	create loadout
-	
+
 map is square(ish)
 	top side is day timer/boss timer/speed/pause
 	right side is items/inv/detail panel
 	bottom is hand of cards
-	
-	battle pops up over map
-	
 
-	
-	
-	
+	battle pops up over map
+
+
+
+
