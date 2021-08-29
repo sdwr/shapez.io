@@ -137,7 +137,6 @@ export class CombatSystem extends GameSystemWithFilter {
             let e = entities[i];
             if (e.team != entity.team) {
                 let dist = this.distToTarget(entity, e);
-                console.log(dist);
                 if (dist < closest && dist < 10) {
                     closest = dist;
                     target = e;

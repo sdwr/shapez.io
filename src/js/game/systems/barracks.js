@@ -94,7 +94,7 @@ export class BarracksSystem extends GameSystemWithFilter {
             // this sucks because it runs every frame
             for (let i = entity.children.length - 1; i >= 0; i--) {
                 let childId = entity.children[i];
-                let child = this.root.entityMgr.findByUid(childId);
+                let child = this.root.entityMgr.findByUid(childId, false);
                 if (!child) {
                     entity.children.splice(i, 1);
                 }

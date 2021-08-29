@@ -13,7 +13,6 @@ export class CombatComponent extends Component {
     static getSchema() {
         // cachedMinedItem is not serialized.
         return {
-            hp: types.int,
             range: types.int,
             damage: types.int,
             atkspeed: types.int,
@@ -22,9 +21,8 @@ export class CombatComponent extends Component {
         };
     }
 
-    constructor(hp = 10, range = 3, damage = 5, atkspeed = 2000, atkcooldown = 2000, target = 0) {
+    constructor(range = 3, damage = 5, atkspeed = 2000, atkcooldown = 2000, target = 0) {
         super();
-        this.hp = hp;
         this.range = range;
         this.damage = damage;
         this.atkspeed = atkspeed;

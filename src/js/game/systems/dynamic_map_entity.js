@@ -98,6 +98,20 @@ export class DynamicMapEntitySystem extends GameSystemWithFilter {
                     globalConfig.defaultItemDiameter
                 );
             }
+
+            if (entity.hp < entity.hpMax) {
+                let perc = (entity.hp + 0.0) / entity.hpMax;
+                let pos = dynamicComp.origin.mul(new Vector(globalConfig.tileSize, globalConfig.tileSize));
+                parameters.context.fillStyle = "red";
+                parameters.context.fillRect(pos.x, pos.y, globalConfig.tileSize, globalConfig.tileSize / 8);
+                parameters.context.fillStyle = "green";
+                parameters.context.fillRect(
+                    pos.x,
+                    pos.y,
+                    globalConfig.tileSize * perc,
+                    globalConfig.tileSize / 8
+                );
+            }
         }
     }
 }

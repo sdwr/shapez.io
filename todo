@@ -5,6 +5,15 @@ base-en.yaml
 
 
 NOT DONE:
+	performance
+		under 100 fps without GPU
+		:(
+
+	FIX TARGETING - some units take a second to target/retarget
+		need attack cooldown
+		hp bars DONE
+		to diagnose
+
 	controls
 		keyboard controls for building (e for mine, r for combat?)
 		mouse wheel changes selected?

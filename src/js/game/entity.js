@@ -55,6 +55,8 @@ export class Entity extends BasicSerializableObject {
 
         this.hp = 10;
 
+        this.hpMax = 10;
+
         /* typehints:start */
 
         /**
@@ -89,6 +91,7 @@ export class Entity extends BasicSerializableObject {
             uid: types.uint,
             team: types.uint,
             hp: types.int,
+            hpMax: types.int,
             components: types.keyValueMap(types.objData(gComponentRegistry), false),
             children: types.array(types.uint),
         };
