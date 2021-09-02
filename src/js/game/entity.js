@@ -53,6 +53,8 @@ export class Entity extends BasicSerializableObject {
 
         this.team = 1;
 
+        this.class = "";
+
         this.hp = 10;
 
         this.hpMax = 10;
@@ -89,6 +91,7 @@ export class Entity extends BasicSerializableObject {
     static getSchema() {
         return {
             uid: types.uint,
+            class: types.string,
             team: types.uint,
             hp: types.int,
             hpMax: types.int,

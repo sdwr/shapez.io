@@ -14,6 +14,7 @@ import { ResourceItem } from "../items/resource_item";
 import { enumUnitStates } from "../components/dynamic_map_entity";
 import { BarracksComponent } from "../components/barracks";
 import { KEYMAPPINGS } from "../key_action_mapper";
+import { MetaFighter } from "../buildings/units/fighter";
 
 export class BarracksSystem extends GameSystemWithFilter {
     constructor(root) {
@@ -37,21 +38,22 @@ export class BarracksSystem extends GameSystemWithFilter {
         let offset = new Vector(Math.random() * 2, Math.random() * 2);
 
         let worker = this.spawnUnitAt(
-            gMetaBuildingRegistry.findById(unitType),
-            entity.components.StaticMapEntity.origin.add(offset)
+            gMetaBuildingRegistry.findByClass(MetaFighter),
+            entity.components.StaticMapEntity.origin.add(offset),
+            unitType
         );
         worker.team = entity.team;
         entity.children.push(worker.uid);
     }
 
-    spawnUnitAt(metaUnit, tile) {
+    spawnUnitAt(metaUnit, tile, variant = "default") {
         const entity = this.root.logic.trySpawnUnit({
             origin: tile,
             speed: metaUnit.getSpeed(),
             destination: tile,
             rotation: 0,
             rotationVariant: 0,
-            variant: "default",
+            variant: variant,
             building: metaUnit,
         });
 

@@ -7,6 +7,15 @@ import { defaultBuildingVariant } from "../../meta_building";
 import { Vector } from "../../../core/vector";
 import { CombatComponent } from "../../components/combat";
 
+/** @enum {string} */
+export const enumFighterVariant = {
+    default: "default",
+    archer: "archer",
+    cannon: "cannon",
+    baneling: "baneling",
+    mage: "mage",
+};
+
 export class MetaFighter extends MetaUnit {
     constructor() {
         super("fighter");
@@ -34,7 +43,13 @@ export class MetaFighter extends MetaUnit {
      * @param {GameRoot} root
      */
     getAvailableVariants(root) {
-        let available = [defaultBuildingVariant];
+        let available = [
+            defaultBuildingVariant,
+            enumFighterVariant.archer,
+            enumFighterVariant.baneling,
+            enumFighterVariant.cannon,
+            enumFighterVariant.mage,
+        ];
         return available;
     }
 
@@ -44,6 +59,19 @@ export class MetaFighter extends MetaUnit {
      */
     setupEntityComponents(entity) {
         entity.addComponent(new CombatComponent());
+    }
+
+    /**
+     *
+     * @param {Entity} entity
+     * @param {number} rotationVariant
+     * @param {string} variant
+     */
+    updateVariants(entity, rotationVariant, variant) {
+        switch (variant) {
+            case defaultBuildingVariant: {
+            }
+        }
     }
 
     /**

@@ -103,6 +103,8 @@
                 &.selected {
                     // transform: scale(1.05);
                     background-color: rgba(lighten($colorBlueBright, 9), 0.4);
+                    border: solid;
+                    border-color: black;
 
                     .keybinding {
                         color: #111;

@@ -26,10 +26,8 @@ export class MetaBarracksBuilding extends MetaBuilding {
         switch (variant) {
             case defaultBuildingVariant:
                 return new Vector(1, 1);
-            case enumBarracksVariants.quad:
-                return new Vector(4, 1);
             default:
-                assertAlways(false, "Unknown barracks variant: " + variant);
+                return new Vector(1, 1);
         }
     }
 
@@ -69,7 +67,7 @@ export class MetaBarracksBuilding extends MetaBuilding {
      * @param {Entity} entity
      */
     setupEntityComponents(entity) {
-        entity.addComponent(new BarracksComponent("fighter"));
+        entity.addComponent(new BarracksComponent("default"));
     }
 
     /**
@@ -79,13 +77,6 @@ export class MetaBarracksBuilding extends MetaBuilding {
      * @param {string} variant
      */
     updateVariants(entity, rotationVariant, variant) {
-        switch (variant) {
-            case defaultBuildingVariant: {
-                break;
-            }
-
-            default:
-                assertAlways(false, "Unknown barracks variant: " + variant);
-        }
+        entity.components.Barracks.unitType = variant;
     }
 }

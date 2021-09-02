@@ -114,6 +114,7 @@ export class SerializerInternal {
 
         entity.uid = payload.uid;
         entity.children = payload.children;
+        entity.class = payload.class;
         entity.team = payload.team;
         entity.hp = payload.hp;
         entity.hpMax = payload.hpMax;
@@ -147,6 +148,7 @@ export class SerializerInternal {
 
         entity.uid = payload.uid;
         entity.team = payload.team;
+        entity.class = payload.class;
         entity.hp = payload.hp;
         entity.hpMax = payload.hpMax;
 

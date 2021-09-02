@@ -17,30 +17,20 @@ import { MetaStorageBuilding } from "../../buildings/storage";
 import { MetaItemProducerBuilding } from "../../buildings/item_producer";
 import { queryParamOptions } from "../../../core/query_parameters";
 import { MetaBarracksBuilding } from "../../buildings/barracks";
+import { enumFighterVariant } from "../../buildings/units/fighter";
+import { gMetaBuildingRegistry } from "../../../core/global_registries";
+import { getCodeFromBuildingData } from "../../building_codes";
 
 export class HUDBuildingsToolbar extends HUDBaseToolbar {
     constructor(root) {
         super(root, {
             primaryBuildings: [
-                MetaBeltBuilding,
-                MetaBalancerBuilding,
-                MetaUndergroundBeltBuilding,
-                MetaMinerBuilding,
-                MetaBarracksBuilding,
-                MetaCutterBuilding,
-                MetaRotaterBuilding,
-                MetaStackerBuilding,
-                MetaMixerBuilding,
-                MetaPainterBuilding,
-                MetaTrashBuilding,
-                ...(queryParamOptions.sandboxMode || G_IS_DEV ? [MetaItemProducerBuilding] : []),
-            ],
-            secondaryBuildings: [
-                MetaStorageBuilding,
-                MetaReaderBuilding,
-                MetaLeverBuilding,
-                MetaFilterBuilding,
-                MetaDisplayBuilding,
+                getCodeFromBuildingData(
+                    gMetaBuildingRegistry.findByClass(MetaBarracksBuilding),
+                    "default",
+                    0
+                ),
+                getCodeFromBuildingData(gMetaBuildingRegistry.findByClass(MetaBarracksBuilding), "archer", 0),
             ],
             visibilityCondition: () =>
                 !this.root.camera.getIsMapOverlayActive() && this.root.currentLayer === "regular",

@@ -78,7 +78,6 @@ export class GameHUD {
 
         this.parts = {
             buildingsToolbar: new HUDBuildingsToolbar(this.root),
-            wiresToolbar: new HUDWiresToolbar(this.root),
             blueprintPlacer: new HUDBlueprintPlacer(this.root),
             buildingPlacer: new HUDBuildingPlacer(this.root),
             unlockNotification: new HUDUnlockNotification(this.root),

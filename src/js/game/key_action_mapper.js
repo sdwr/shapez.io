@@ -25,14 +25,12 @@ export const KEYMAPPINGS = {
     ingame: {
         menuOpenShop: { keyCode: key("F") },
         menuOpenStats: { keyCode: key("G") },
-        menuClose: { keyCode: key("Q") },
+        menuClose: { keyCode: 117 }, //F6
 
         toggleHud: { keyCode: 113 }, // F2
         exportScreenshot: { keyCode: 114 }, // F3PS
         toggleFPSInfo: { keyCode: 115 }, // F4
         toggleFPSDetails: { keyCode: 121 }, // F10
-
-        switchLayers: { keyCode: key("E") },
     },
 
     player: {
@@ -41,6 +39,9 @@ export const KEYMAPPINGS = {
         moveDown: { keyCode: key("S") },
         moveLeft: { keyCode: key("A") },
         rally: { keyCode: 32 }, // SPACE
+        cycleLeft: { keyCode: key("Q") },
+        cycleRight: { keyCode: key("E") },
+        build: { keyCode: key("R") },
     },
 
     navigation: {
@@ -59,17 +60,16 @@ export const KEYMAPPINGS = {
 
     buildings: {
         // Primary Toolbar
-        belt: { keyCode: key("1") },
-        balancer: { keyCode: key("2") },
-        underground_belt: { keyCode: key("3") },
-        miner: { keyCode: key("4") },
-        barracks: { keyCode: key("5") },
-        rotater: { keyCode: key("6") },
-        stacker: { keyCode: key("7") },
-        mixer: { keyCode: key("8") },
-        painter: { keyCode: key("9") },
-        trash: { keyCode: key("0") },
-        cutter: { keyCode: key("`") },
+        1: { keyCode: key("1") },
+        2: { keyCode: key("2") },
+        3: { keyCode: key("3") },
+        4: { keyCode: key("4") },
+        5: { keyCode: key("5") },
+        6: { keyCode: key("6") },
+        7: { keyCode: key("7") },
+        8: { keyCode: key("8") },
+        9: { keyCode: key("9") },
+        0: { keyCode: key("0") },
 
         // Sandbox
         item_producer: { keyCode: key("L") },
@@ -82,21 +82,21 @@ export const KEYMAPPINGS = {
         display: { keyCode: key("P") },
 
         // Wires toolbar
-        wire: { keyCode: key("1") },
-        wire_tunnel: { keyCode: key("2") },
-        constant_signal: { keyCode: key("3") },
-        logic_gate: { keyCode: key("4") },
-        virtual_processor: { keyCode: key("5") },
-        analyzer: { keyCode: key("6") },
-        comparator: { keyCode: key("7") },
-        transistor: { keyCode: key("8") },
+        // wire: { keyCode: key("1") },
+        // wire_tunnel: { keyCode: key("2") },
+        // constant_signal: { keyCode: key("3") },
+        // logic_gate: { keyCode: key("4") },
+        // virtual_processor: { keyCode: key("5") },
+        // analyzer: { keyCode: key("6") },
+        // comparator: { keyCode: key("7") },
+        // transistor: { keyCode: key("8") },
 
         resource: { keyCode: key("B") },
     },
 
     placement: {
         pipette: { keyCode: key("Q") },
-        rotateWhilePlacing: { keyCode: key("R") },
+        rotateWhilePlacing: { keyCode: key("`") },
         rotateInverseModifier: { keyCode: 16 }, // SHIFT
         rotateToUp: { keyCode: KEYCODE_UP_ARROW },
         rotateToDown: { keyCode: KEYCODE_DOWN_ARROW },

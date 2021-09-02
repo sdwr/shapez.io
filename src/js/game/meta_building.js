@@ -203,6 +203,7 @@ export class MetaBuilding {
     createStaticEntity({ root, origin, rotation, originalRotation, rotationVariant, variant }) {
         const entity = new Entity(root);
         entity.layer = this.getLayer();
+        entity.class = this.getId();
         entity.addComponent(
             new StaticMapEntityComponent({
                 origin: new Vector(origin.x, origin.y),
@@ -230,6 +231,7 @@ export class MetaBuilding {
     }) {
         const entity = new Entity(root);
         entity.layer = this.getLayer();
+        entity.class = this.getId();
         entity.addComponent(
             new DynamicMapEntityComponent({
                 origin: origin.copy(),

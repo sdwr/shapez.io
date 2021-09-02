@@ -78,10 +78,10 @@ export class CombatSystem extends GameSystemWithFilter {
                         entity.components.DynamicMapEntity.setDestination(
                             entity.components.DynamicMapEntity.origin
                         );
-                        this.attack(entity, target);
                         entity.components.DynamicMapEntity.setRotation(
                             target.components.DynamicMapEntity.origin
                         );
+                        this.attack(entity, target);
                     } else {
                         this.findTarget(entity);
                         if (combatComp.target) {

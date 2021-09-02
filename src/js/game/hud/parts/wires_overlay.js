@@ -16,7 +16,6 @@ export class HUDWiresOverlay extends BaseHUDPart {
 
     initialize() {
         // Probably not the best location, but the one which makes most sense
-        this.root.keyMapper.getBinding(KEYMAPPINGS.ingame.switchLayers).add(this.switchLayers, this);
         this.root.keyMapper.getBinding(KEYMAPPINGS.placement.copyWireValue).add(this.copyWireValue, this);
 
         this.generateTilePattern();

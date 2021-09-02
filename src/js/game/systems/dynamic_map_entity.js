@@ -64,6 +64,10 @@ export class DynamicMapEntitySystem extends GameSystemWithFilter {
                         dynamicMapEntityComp.origin = newPosition;
                         oldChunk.removeDynamicEntityFromChunk(sourceEntity);
                         newChunk.addDynamicEntityToChunk(sourceEntity);
+                    } else {
+                        if (sourceEntity.components.Player) {
+                            newChunk.toggleExists();
+                        }
                     }
                 }
             }
@@ -111,6 +115,24 @@ export class DynamicMapEntitySystem extends GameSystemWithFilter {
                     globalConfig.tileSize * perc,
                     globalConfig.tileSize / 8
                 );
+            }
+            let combatComp = entity.components.Combat;
+            if (combatComp && combatComp.atkcooldown > 0) {
+                let perc = combatComp.atkcooldown / combatComp.atkspeed;
+                let pos = dynamicComp.origin.mul(new Vector(globalConfig.tileSize, globalConfig.tileSize));
+                pos.add(new Vector(0.5, 0.75));
+                parameters.context.strokeStyle = "blue";
+                parameters.context.lineWidth = 3;
+                parameters.context.beginPath();
+                parameters.context.arc(
+                    pos.x,
+                    pos.y,
+                    5,
+                    (Math.PI * 3) / 2,
+                    (Math.PI * 3) / 2 + Math.PI * 2 * perc,
+                    false
+                );
+                parameters.context.stroke();
             }
         }
     }
