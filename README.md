@@ -1,6 +1,6 @@
 # Untitled RTS
 
-<img src="https://imgur.com/a/N51i060" alt="untitled RTS">
+<img src="https://i.imgur.com/wy5hAIj.png" alt="untitled RTS">
 
 RTS prototype build on top of shapez.io, themed on Tooth and Tail and hero-style RTS games. Build units, lead them in battle, explore new areas.
 
