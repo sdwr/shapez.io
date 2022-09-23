@@ -1,24 +1,8 @@
-# shapez.io
+# Untitled RTS
 
-<img src="https://i.imgur.com/Y5Z2iqQ.png" alt="shapez.io Logo">
+<img src="https://imgur.com/a/N51i060" alt="untitled RTS">
 
-This is the source code for shapez.io, an open source base building game inspired by Factorio.
-Your goal is to produce shapes by cutting, rotating, merging and painting parts of shapes.
-
--   [Trello Board & Roadmap](https://trello.com/b/ISQncpJP/shapezio)
--   [Free web version](https://shapez.io)
--   [itch.io Page](https://tobspr.itch.io/shapezio)
--   [Steam Page](https://steam.shapez.io)
--   [Official Discord](https://discord.com/invite/HN7EVzV) <- _Highly recommended to join!_
-
-## Reporting issues, suggestions, feedback, bugs
-
-1. Ask in `#bugs` / `#feedback` / `#questions` on the [Official Discord](https://discord.com/invite/HN7EVzV) if you are not entirely sure if it's a bug etc.
-2. Check out the trello board: https://trello.com/b/ISQncpJP/shapezio
-3. See if it's already there - If so, vote for it, done. I will see it. (You have to be signed in on trello)
-4. If not, check if it's already reported here: https://github.com/tobspr/shapez.io/issues
-5. If not, file a new issue here: https://github.com/tobspr/shapez.io/issues/new
-6. I will then have a look (This can take days or weeks) and convert it to trello, and comment with the link. You can then vote there ;)
+RTS prototype build on top of shapez.io, themed on Tooth and Tail and hero-style RTS games. Build units, lead them in battle, explore new areas.
 
 ## Building
 
@@ -35,27 +19,11 @@ Your goal is to produce shapes by cutting, rotating, merging and painting parts 
 
 You can use [Gitpod](https://www.gitpod.io/) (an Online Open Source VS Code-like IDE which is free for Open Source) for working on issues and making PRs to this project. With a single click it will start a workspace and automatically:
 
-- clone the `shapez.io` repo.
-- install all of the dependencies.
-- start `gulp` in `gulp/` directory.
+-   clone the `shapez.io` repo.
+-   install all of the dependencies.
+-   start `gulp` in `gulp/` directory.
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/from-referrer/)
-
-## Helping translate
-
-Please checkout the [Translations readme](translations/).
-
-## Contributing
-
-Since this game is in the more or less early development, I will only accept pull requests which add an immediate benefit. Please understand that low quality PR's might be closed by me with a short comment explaining why.
-
-**If you want to add a new building, please understand that I can not simply add every building to the game!** I recommend to talk to me before implementing anything, to make sure its actually useful. Otherwise there is a high chance of your PR not getting merged.
-
-If you want to add a new feature or in generally contribute I recommend to get in touch with me on Discord:
-
-<a href="https://discord.com/invite/HN7EVzV" target="_blank">
-<img src="https://i.imgur.com/SoawBhW.png" alt="discord logo" width="100">
-</a>
 
 ### Code
 
